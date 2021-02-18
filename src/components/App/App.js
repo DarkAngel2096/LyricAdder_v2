@@ -3,9 +3,10 @@ import React, {Suspense, useEffect} from "react";
 import {Route, Switch, useLocation} from "react-router-dom";
 
 // component improts
-import {routes} from "./routes";
+import {routes, sidebarRoutes} from "./routes";
+import NotFound from "../Pages/NotFound/index";
 
-// css import
+// scss import
 import "./App.scss";
 
 // other module imports
@@ -23,14 +24,19 @@ export default function App() {
 
 	return (
 		<div className="App">
-			<Sidebar/>
-			<Suspense fallback={<h1>Loading...</h1>}>
-				<Switch>
-					{routes.map((route, index) => {
-						return <Route exact path={route.path} component={route.component} key={`route-${index}`}/>
-					})}
-				</Switch>
-			</Suspense>
+			<div className="App--Sidebar">
+				<Sidebar sidebarRoutes={sidebarRoutes}/>
+			</div>
+			<div className="App--MainPage">
+				<Suspense fallback={<h1>Loading...</h1>}>
+					<Switch>
+						{routes.map((route, index) => {
+							return <Route exact path={route.path} component={route.component} key={`route-${index}`}/>
+						})}
+						<Route component={NotFound}/>
+					</Switch>
+				</Suspense>
+			</div>
 		</div>
 	);
 }

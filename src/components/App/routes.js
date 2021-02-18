@@ -17,3 +17,28 @@ export const routes =  [
 		component: Home
 	}
 ]
+
+export const sidebarRoutes = [
+	{
+		categoryName: "Editors",
+		subCategories: [
+			{
+				name: "Lyrics",
+				path: "/lyrics"
+			},
+			{
+				name: "Ini",
+				path: "/ini"
+			}
+		]
+	},
+	{
+		categoryName: "Diff reducer",
+		subCategories: [
+			{
+				name: "main",
+				path: "/diffReducer"
+			}
+		]
+	}
+]

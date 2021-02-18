@@ -1,3 +1,14 @@
 .App {
 	text-align: center;
+	display: flex;
+
+	&--Sidebar {
+		width: 150px;
+		height: calc(100vh - 10px);
+	}
+
+	&--MainPage {
+		width: calc(100% - 150px);
+		vertical-align: top;
+	}
 }

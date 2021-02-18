@@ -12,6 +12,8 @@ const createWindow = () => {
 	mainWindow = new BrowserWindow({
 		width: 1600,
 		height: 1000,
+		minWidth: 1000,
+		minHeight: 600,
 		show: false,
 		icon: path.join(__dirname + "./../images/LyricAdder icon.png"),
 		webReferences: {nodeIntegration: true}

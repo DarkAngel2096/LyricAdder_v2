@@ -1,0 +1,30 @@
+.Sidebar {
+	position: relative;
+	height: 100%;
+	border: 5px solid rgba(0, 0, 0, 0.5);
+	background-color: rgba(0, 0, 0, 0.1);
+	
+
+	&--Header {
+		border: 5px solid rgba(0, 100, 100, 0.5);
+		background-color: rgba(0, 100, 100, 0.1);
+	}
+
+	&--Categories {
+		border: 5px solid rgba(100, 0, 100, 0.5);
+		background-color: rgba(100, 0, 100, 0.1);
+	}
+
+	&--Button {
+		border: 5px solid rgba(100, 100, 0, 0.5);
+		background-color: rgba(100, 100, 0, 0.1);
+	}
+
+	&--Footer {
+		position: absolute;
+		bottom: 0px;
+
+		border: 5px solid rgba(0, 100, 100, 0.5);
+		background-color: rgba(0, 100, 100, 0.1);
+	}
+}
