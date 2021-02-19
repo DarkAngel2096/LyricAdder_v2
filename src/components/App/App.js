@@ -25,7 +25,7 @@ export default function App() {
 	return (
 		<div className="App">
 			<div className="App--Sidebar">
-				<Sidebar sidebarRoutes={sidebarRoutes}/>
+				<Sidebar sidebarRoutes={sidebarRoutes} currentPath={location.pathname}/>
 			</div>
 			<div className="App--MainPage">
 				<Suspense fallback={<h1>Loading...</h1>}>

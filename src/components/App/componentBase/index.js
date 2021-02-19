@@ -12,11 +12,11 @@ import "./index.scss"
 // other file imports
 
 // export the default function
-export default function Home() {
+export default function ComponentBase() {
 
 	return (
-		<Page name="Home">
-			<h1>Welcome to LyricAdder v2</h1>
+		<Page name="ComponentBase">
+			<h1>oh hai :)</h1>
 		</Page>
 	)
 }

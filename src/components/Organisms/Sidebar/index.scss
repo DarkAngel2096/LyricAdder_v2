@@ -3,19 +3,68 @@
 	height: 100%;
 	border: 5px solid rgba(0, 0, 0, 0.5);
 	background-color: rgba(0, 0, 0, 0.1);
-	
 
 	&--Header {
 		border: 5px solid rgba(0, 100, 100, 0.5);
 		background-color: rgba(0, 100, 100, 0.1);
 	}
 
-	&--Categories {
+	&--Items {
 		border: 5px solid rgba(100, 0, 100, 0.5);
 		background-color: rgba(100, 0, 100, 0.1);
+
+		text-align: left;
+
+		.side-navigation-panel {
+			&-select {
+				list-style: none;
+				padding-left: 1em;
+				margin-top: 0.5em;
+				margin-bottom: 0.5em;
+				//border: 5px solid rgba(150, 150, 150, 0.5);
+
+				&:hover {
+					cursor: pointer;
+					background-color: rgb(150, 150, 150);
+				}
+
+				&-option-selected {
+					background-color: rgba(100, 100, 100, 0.2)
+				}
+
+				&-wrap {
+					//border: 5px solid rgba(50, 100, 100, 0.5);
+				}
+
+				&-inner {
+					list-style: inherit;
+					padding-left: 1em;
+					margin-top: 0.5em;
+					margin-bottom: 0.5em;
+					//border: 5px solid rgba(100, 100, 100, 0.5);
+
+					&-wrap:hover {
+						background-color: rgb(200, 200, 200);
+					}
+
+					&-option-selected {
+						background-color: rgba(100, 100, 100, 0.2)
+					}
+
+					&-wrap {
+						//border: 5px solid rgba(0, 100, 100, 0.5);
+					}
+				}
+
+				svg {
+					float: right;
+				}
+			}
+
+		}
 	}
 
-	&--Button {
+	&--DirectorySelector {
 		border: 5px solid rgba(100, 100, 0, 0.5);
 		background-color: rgba(100, 100, 0, 0.1);
 	}
@@ -23,6 +72,7 @@
 	&--Footer {
 		position: absolute;
 		bottom: 0px;
+		width: calc(100% - 10px);		// for the border
 
 		border: 5px solid rgba(0, 100, 100, 0.5);
 		background-color: rgba(0, 100, 100, 0.1);

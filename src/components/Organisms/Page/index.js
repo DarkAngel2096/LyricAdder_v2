@@ -2,21 +2,21 @@
 import React from "react";
 
 // component improts
-import Page from "../../Organisms/Page/index";
 
 // scss import
-import "./index.scss"
+import "./index.scss";
 
 // other module imports
 
 // other file imports
 
 // export the default function
-export default function Home() {
+export default function Page({children, name}) {
 
 	return (
-		<Page name="Home">
-			<h1>Welcome to LyricAdder v2</h1>
-		</Page>
+		<div className={`Page--${name}`}>
+			<h1 className={`Page--Header`}>{name}</h1>
+			{children}
+		</div>
 	)
 }

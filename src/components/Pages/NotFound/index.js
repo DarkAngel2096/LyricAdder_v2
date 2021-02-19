@@ -2,8 +2,10 @@
 import React from "react";
 
 // component improts
+import Page from "../../Organisms/Page/index";
 
-// css import
+// scss import
+import "./index.scss"
 
 // other module imports
 
@@ -12,7 +14,9 @@ import React from "react";
 // export the default function
 export default function NotFound() {
 
-	return(
-		<h1>How did you get here..? Are you lost?</h1>
+	return (
+		<Page name="Not Found">
+			<h1>How did you get here..? Are you lost?</h1>
+		</Page>
 	)
 }
