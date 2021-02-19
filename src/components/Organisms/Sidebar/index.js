@@ -32,7 +32,7 @@ export default function Sidebar({sidebarRoutes, currentPath, ...props}) {
 					items={sidebarRoutes}/>
 			</div>
 			<div className="Sidebar--DirectorySelector">
-				<DirectorySelector/>
+				<DirectorySelector />
 			</div>
 			<div className="Sidebar--Footer">
 				<h5>Created by: DarkAngel2096</h5>

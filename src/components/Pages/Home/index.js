@@ -17,6 +17,9 @@ export default function Home() {
 	return (
 		<Page name="Home">
 			<h1>Welcome to LyricAdder v2</h1>
+			<p>
+			Well then, we're back again, this time with a lot of updates but equally many new bugs to find...
+			</p>
 		</Page>
 	)
 }

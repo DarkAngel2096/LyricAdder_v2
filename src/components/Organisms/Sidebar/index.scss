@@ -1,6 +1,8 @@
 .Sidebar {
-	position: relative;
 	height: 100%;
+	display: flex;
+	flex-direction: column;
+
 	border: 5px solid rgba(0, 0, 0, 0.5);
 	background-color: rgba(0, 0, 0, 0.1);
 
@@ -10,10 +12,10 @@
 	}
 
 	&--Items {
+		text-align: left;
+
 		border: 5px solid rgba(100, 0, 100, 0.5);
 		background-color: rgba(100, 0, 100, 0.1);
-
-		text-align: left;
 
 		.side-navigation-panel {
 			&-select {
@@ -65,15 +67,13 @@
 	}
 
 	&--DirectorySelector {
+		margin-top: auto;
+
 		border: 5px solid rgba(100, 100, 0, 0.5);
 		background-color: rgba(100, 100, 0, 0.1);
 	}
 
 	&--Footer {
-		position: absolute;
-		bottom: 0px;
-		width: calc(100% - 10px);		// for the border
-
 		border: 5px solid rgba(0, 100, 100, 0.5);
 		background-color: rgba(0, 100, 100, 0.1);
 	}
