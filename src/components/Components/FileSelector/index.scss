@@ -1,0 +1,29 @@
+.FileSelector {
+	border: 5px solid rgba(0, 200, 0, 0.75);
+	background-color: rgba(0, 200, 0, 0.25);
+
+	cursor: pointer;
+
+	label {
+		cursor: pointer;
+	}
+
+	&--Warn {
+		border: 5px solid rgba(255, 200, 0, 0.75);
+		background-color: rgba(255, 200, 0, 0.25);
+	}
+
+	&--Needed {
+		border: 5px solid rgba(255, 0, 0, 0.75);
+		background-color: rgba(255, 0, 0, 0.25);
+	}
+
+	&--FileInput {
+		display: none;
+	}
+
+	&--FileCounts {
+		font-family: monospace;
+		margin: 0px;
+	}
+}

@@ -5,6 +5,7 @@ import {Route, Switch, useLocation} from "react-router-dom";
 // component improts
 import {routes, sidebarRoutes} from "./routes";
 import NotFound from "../Pages/NotFound/index";
+import {PathFileContext} from "../Contexts/contexts";
 
 // scss import
 import "./App.scss";
@@ -25,7 +26,9 @@ export default function App() {
 	return (
 		<div className="App">
 			<div className="App--Sidebar">
-				<Sidebar sidebarRoutes={sidebarRoutes} currentPath={location.pathname}/>
+				<PathFileContext.Provider value={routes[routes.findIndex(element => element.path === location.pathname)].files || []}>
+					<Sidebar sidebarRoutes={sidebarRoutes} currentPath={location.pathname}/>
+				</PathFileContext.Provider>
 			</div>
 			<div className="App--MainPage">
 				<Suspense fallback={<h1>Loading...</h1>}>

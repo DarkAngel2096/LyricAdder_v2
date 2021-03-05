@@ -9,6 +9,10 @@
 	&--Header {
 		border: 5px solid rgba(0, 100, 100, 0.5);
 		background-color: rgba(0, 100, 100, 0.1);
+
+		h2 {
+			margin: 5px;
+		}
 	}
 
 	&--Items {
@@ -76,5 +80,9 @@
 	&--Footer {
 		border: 5px solid rgba(0, 100, 100, 0.5);
 		background-color: rgba(0, 100, 100, 0.1);
+
+		h5, p {
+			margin: 5px;
+		}
 	}
 }

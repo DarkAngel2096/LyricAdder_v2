@@ -8,7 +8,8 @@ const LyricsEditor = lazy(() => import("../Pages/LyricsEditor/index"));
 // export the default array of routes
 export const routes =  [ {
 		path: "/lyrics/editor",
-		component: LyricsEditor
+		component: LyricsEditor,
+		files: ["chart", "ini"]
 	}, {
 		path: "/",
 		component: Home

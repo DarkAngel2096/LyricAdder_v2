@@ -1,6 +1,8 @@
 .DirectorySelector {
 	&--WorkingDir {
-		cursor: pointer;
+		form, label {
+			cursor: pointer;
+		}
 
 		&--WorkDirInput {
 			display: none;
@@ -8,31 +10,19 @@
 
 		&--WorkPath {
 			border: 5px solid rgba(0, 0, 100, 0.5);
-			margin: 0;
 			font-family: monospace;
-		}
-	}
 
-	&--DirFiles {
-		.FileSelector {
-			border: 5px solid rgba(0, 255, 0, 0.75);
-			background-color: rgba(0, 255, 0, 0.25);
-
-			cursor: pointer;
-
-			&--Warn {
-				border: 5px solid rgba(255, 0, 0, 0.75);
-				background-color: rgba(255, 0, 0, 0.25);
+			p {
+				margin: 0;
 			}
 
-			&--FileInput {
-				display: none;
+			span {
+				font-size: 1.25em;
 			}
 
-			&--FileCounts {
-				font-family: monospace;
-				margin: 0px;
-
+			&--SubFolders {
+				border: 5px solid rgba(255, 100, 0, 0.75);
+				font-size: 1.25em;
 			}
 		}
 	}

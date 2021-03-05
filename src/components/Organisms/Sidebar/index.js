@@ -17,18 +17,19 @@ import {Navigation} from "react-minimal-side-navigation";
 export default function Sidebar({sidebarRoutes, currentPath, ...props}) {
 	const history = useHistory();
 
+	const headHome = () => {
+		history.push("/");
+	}
+
 	return (
 		<div className="Sidebar">
-			<div className="Sidebar--Header">
+			<div className="Sidebar--Header" onClick={headHome}>
 				<h2>LyricAdder v2</h2>
 			</div>
 			<div className="Sidebar--Items">
 				<Navigation
 					activeItemId={currentPath}
-					onSelect={({itemId}) => {
-						console.log(itemId);
-						history.push(itemId);
-					}}
+					onSelect={({itemId}) => {history.push(itemId)}}
 					items={sidebarRoutes}/>
 			</div>
 			<div className="Sidebar--DirectorySelector">
