@@ -3,7 +3,8 @@ import React from "react";
 import {useHistory} from "react-router-dom";
 
 // component improts
-import DirectorySelector from "./../DirectorySelector/index";
+import DirectorySelector from "../DirectorySelector/index";
+import Navbar from "../../Components/Navbar/index";
 
 // scss import
 import "./index.scss";
@@ -14,16 +15,12 @@ import {Navigation} from "react-minimal-side-navigation";
 // other file imports
 
 // export the default function
-export default function Sidebar({sidebarRoutes, currentPath, ...props}) {
+export default function Sidebar({sidebarRoutes, newSidebarRoutes, currentPath, ...props}) {
 	const history = useHistory();
-
-	const headHome = () => {
-		history.push("/");
-	}
 
 	return (
 		<div className="Sidebar">
-			<div className="Sidebar--Header" onClick={headHome}>
+			<div className="Sidebar--Header" onClick={() => history.push("/")}>
 				<h2>LyricAdder v2</h2>
 			</div>
 			<div className="Sidebar--Items">
@@ -31,6 +28,9 @@ export default function Sidebar({sidebarRoutes, currentPath, ...props}) {
 					activeItemId={currentPath}
 					onSelect={({itemId}) => {history.push(itemId)}}
 					items={sidebarRoutes}/>
+			</div>
+			<div className="Sidebar--Navbar">
+				<Navbar items={newSidebarRoutes} />
 			</div>
 			<div className="Sidebar--DirectorySelector">
 				<DirectorySelector />

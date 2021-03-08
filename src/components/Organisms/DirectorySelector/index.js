@@ -15,7 +15,6 @@ import "./index.scss"
 // export the default function
 export default function DirectorySelector() {
 	const requiredFilesContext = useContext(PathFileContext);
-	console.log(requiredFilesContext);
 
 	const [workPath, setWorkPath] = useState(null);
 	const workInputRef = useRef(null);
@@ -34,7 +33,11 @@ export default function DirectorySelector() {
 	}
 
 	const handleFileSelection = (data) => {
-		console.log(data);
+		let tempFiles = dirFiles;
+		tempFiles[data.type].main = data.file;
+
+		setDirFiles(tempFiles);
+		console.log(`updated files`);
 	}
 
 	return (
@@ -60,7 +63,7 @@ export default function DirectorySelector() {
 			</div>
 			{dirFiles && Object.entries(dirFiles).map(type => {
 				return (
-					<FileSelector data={type} key={type[0]} requiredFiles={requiredFilesContext.includes(type[0])} onFileSelected={data => handleFileSelection(data)}/>
+					<FileSelector data={type} key={type[0]} requiredFiles={requiredFilesContext.includes(type[0])} onFileSelected={handleFileSelection}/>
 				)
 			})}
 		</div>

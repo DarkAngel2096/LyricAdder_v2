@@ -15,7 +15,7 @@ export default function FileSelector({data, requiredFiles, onFileSelected, ...pr
 	const inputRef = useRef(null);
 
 	const handleFileDir = () => {
-		console.log(inputRef);
+		onFileSelected({type: data[0], file: inputRef.current.files[0]});
 	}
 
 	const acceptedTypes = {

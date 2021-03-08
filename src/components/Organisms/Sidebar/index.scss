@@ -10,6 +10,8 @@
 		border: 5px solid rgba(0, 100, 100, 0.5);
 		background-color: rgba(0, 100, 100, 0.1);
 
+		cursor: pointer;
+
 		h2 {
 			margin: 5px;
 		}
@@ -68,6 +70,11 @@
 			}
 
 		}
+	}
+
+	&--Navbar {
+		border: 5px solid rgba(150, 50, 100, 0.5);
+		background-color: rgba(150, 50, 100, 0.1); 
 	}
 
 	&--DirectorySelector {

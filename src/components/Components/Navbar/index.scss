@@ -1,0 +1,12 @@
+.Navbar {
+	margin: 0;
+
+	&--Item {
+		text-align: left;
+		margin: 5px;
+
+		p {
+			margin: 0;
+		}
+	}
+}
