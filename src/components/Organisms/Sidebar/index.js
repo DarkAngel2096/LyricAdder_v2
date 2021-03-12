@@ -1,5 +1,5 @@
 // React imports
-import React from "react";
+import React, {useState} from "react";
 import {useHistory} from "react-router-dom";
 
 // component improts
@@ -10,34 +10,30 @@ import Navbar from "../../Components/Navbar/index";
 import "./index.scss";
 
 // other module imports
-import {Navigation} from "react-minimal-side-navigation";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 // other file imports
 
 // export the default function
-export default function Sidebar({sidebarRoutes, newSidebarRoutes, currentPath, ...props}) {
+export default function Sidebar({sidebarRoutes, currentPath, ...props}) {
 	const history = useHistory();
 
+	const [collapsed, setCollapsed] = useState(false);
+
 	return (
-		<div className="Sidebar">
-			<div className="Sidebar--Header" onClick={() => history.push("/")}>
-				<h2>LyricAdder v2</h2>
-			</div>
-			<div className="Sidebar--Items">
-				<Navigation
-					activeItemId={currentPath}
-					onSelect={({itemId}) => {history.push(itemId)}}
-					items={sidebarRoutes}/>
+		<div className={`Sidebar ${collapsed ? "Sidebar--Collapsed" : ""}`}>
+			<div className={`Sidebar--Header`} onClick={() => history.push("/")}>
+				<FontAwesomeIcon icon="home" className={!collapsed ? "collapsed" : ""}/>
+				<h2 className={collapsed ? "collapsed" : ""}>LyricAdder v2</h2>
 			</div>
 			<div className="Sidebar--Navbar">
-				<Navbar items={newSidebarRoutes} />
+				<Navbar items={sidebarRoutes} activeItem={currentPath} collapsed={collapsed}/>
 			</div>
-			<div className="Sidebar--DirectorySelector">
+			<div className={`Sidebar--DirectorySelector ${collapsed ? "collapsed" : ""}`}>
 				<DirectorySelector />
 			</div>
-			<div className="Sidebar--Footer">
-				<h5>Created by: DarkAngel2096</h5>
-				<p>Version: 2.0.0</p>
+			<div className="Sidebar--Collapse" onClick={() => {setCollapsed(!collapsed)}}>
+				<FontAwesomeIcon icon="chevron-right" rotation={collapsed ? 0 : 180}/>
 			</div>
 		</div>
 	)

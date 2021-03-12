@@ -17,37 +17,24 @@ export const routes =  [ {
 ]
 
 export const sidebarRoutes = [ {
-		title: "Lyrics Editor",
-		itemId: "/lyrics/editor"
-	}, {
-		title: "Lyrics Preview",
-		itemId: "/lyrics/preview"
-	}, {
-		title: "Ini Editor",
-		itemId: "/ini/editor"
-	}, {
-		title: "Settings",
-		itemId: "/settings"
-	}, {
-		title: "Themes",
-		itemId: "/themes"
-	}
-]
-
-export const newSidebarRoutes = [ {
 		name: "Lyrics Editor",
-		path: "/lyrics/editor"
+		path: "/lyrics/editor",
+		icon: "edit"
 	}, {
 		name: "Lyrics Preview",
-		path: "/lyrics/preview"
+		path: "/lyrics/preview",
+		icon: "music"
 	}, {
 		name: "Ini Editor",
-		path: "/ini/editor"
+		path: "/ini/editor",
+		icon: "file-alt"
 	}, {
 		name: "Settings",
-		path: "/settings"
+		path: "/settings",
+		icon: "cog"
 	}, {
 		name: "Themes",
-		path: "/themes"
+		path: "/themes",
+		icon: "user-edit"
 	}
 ]

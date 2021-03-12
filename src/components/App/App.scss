@@ -3,12 +3,11 @@
 	display: flex;
 
 	&--Sidebar {
-		width: 150px;
-		height: calc(100vh - 10px);		// needs the calc because borders in use
+		height: 100vh;	// needs the calc because borders in use
 	}
 
 	&--MainPage {
-		width: calc(100% - 150px);		// moves the "main page" to the right enough so it doesn't get hidden behind anything
+		width: 100%;		// moves the "main page" to the right enough so it doesn't get hidden behind anything
 		vertical-align: top;
 	}
 }

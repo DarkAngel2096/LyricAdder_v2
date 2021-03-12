@@ -1,9 +1,14 @@
 .Sidebar {
+	&--Collapsed {
+		width: 50px;
+	}
+	width: 150px;
+
 	height: 100%;
 	display: flex;
 	flex-direction: column;
 
-	border: 5px solid rgba(0, 0, 0, 0.5);
+	//border-right: 5px solid rgba(0, 0, 0, 0.5);
 	background-color: rgba(0, 0, 0, 0.1);
 
 	&--Header {
@@ -11,70 +16,22 @@
 		background-color: rgba(0, 100, 100, 0.1);
 
 		cursor: pointer;
+		padding: 5px;
+
+		svg {
+			color: blue;
+			flex-basis: 1.5em;
+			font-size: 1.75em;
+		}
 
 		h2 {
-			margin: 5px;
-		}
-	}
-
-	&--Items {
-		text-align: left;
-
-		border: 5px solid rgba(100, 0, 100, 0.5);
-		background-color: rgba(100, 0, 100, 0.1);
-
-		.side-navigation-panel {
-			&-select {
-				list-style: none;
-				padding-left: 1em;
-				margin-top: 0.5em;
-				margin-bottom: 0.5em;
-				//border: 5px solid rgba(150, 150, 150, 0.5);
-
-				&:hover {
-					cursor: pointer;
-					background-color: rgb(150, 150, 150);
-				}
-
-				&-option-selected {
-					background-color: rgba(100, 100, 100, 0.2)
-				}
-
-				&-wrap {
-					//border: 5px solid rgba(50, 100, 100, 0.5);
-				}
-
-				&-inner {
-					list-style: inherit;
-					padding-left: 1em;
-					margin-top: 0.5em;
-					margin-bottom: 0.5em;
-					//border: 5px solid rgba(100, 100, 100, 0.5);
-
-					&-wrap:hover {
-						background-color: rgb(200, 200, 200);
-					}
-
-					&-option-selected {
-						background-color: rgba(100, 100, 100, 0.2)
-					}
-
-					&-wrap {
-						//border: 5px solid rgba(0, 100, 100, 0.5);
-					}
-				}
-
-				svg {
-					float: right;
-				}
-			}
-
+			margin: 0px;
 		}
 	}
 
 	&--Navbar {
 		border: 5px solid rgba(150, 50, 100, 0.5);
-		background-color: rgba(150, 50, 100, 0.1); 
+		background-color: rgba(150, 50, 100, 0.1);
 	}
 
 	&--DirectorySelector {
@@ -84,12 +41,28 @@
 		background-color: rgba(100, 100, 0, 0.1);
 	}
 
-	&--Footer {
+	&--Collapse {
+		cursor: pointer;
+		position: absolute;
+		left: -40px;
+		width: 70px;
+		height: 60px;
+		top: 40%;
+		border-radius: 50%;
 		border: 5px solid rgba(0, 100, 100, 0.5);
-		background-color: rgba(0, 100, 100, 0.1);
+		background-color: rgba(255, 255, 255, 1);
 
-		h5, p {
-			margin: 5px;
+		svg {
+			position: inherit;
+			left: 35px;
+			top: 6px;
+			color: green;
+			flex-basis: 1.5em;
+			font-size: 3em;
 		}
+	}
+
+	.collapsed {
+		display: none;
 	}
 }

@@ -37,6 +37,11 @@ const createWindow = () => {
 		mainWindow.show();
 	});
 
+	mainWindow.webContents.on("did-finish-load", () => {
+		let version = require("../package.json").version;
+		mainWindow.setTitle(`Lyric Adding thingy${version ? ` v.${version}` : ""}`)
+	})
+
 	mainWindow.on('closed', () => {
 		mainWindow = null;
 	});
