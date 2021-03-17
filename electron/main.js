@@ -2,6 +2,8 @@ const { app, BrowserWindow } = require('electron');
 const path = require('path');
 const url = require('url');
 
+const IPC = require("./IPC/MainIPCHandler");
+
 let mainWindow;
 
 // @todo add in cofig file/backups, etc checks here
@@ -15,8 +17,11 @@ const createWindow = () => {
 		minWidth: 1000,
 		minHeight: 600,
 		show: false,
-		icon: path.join(__dirname + "./../images/LyricAdder icon.png"),
-		webReferences: {nodeIntegration: true}
+		icon: path.join(__dirname, "./../images/LyricAdder icon.png"),
+		webPreferences: {
+			nodeIntegration: false,
+			contextIsolation: true,
+			preload: path.join(__dirname, "preload.js")}
 	});
 
 	// set the menu at the top to be invisible and force open dev tools

@@ -3,7 +3,7 @@ import React, {useState, useRef, useContext} from "react";
 
 // component improts
 import FileSelector from "../../Components/FileSelector/index";
-import {PathFileContext} from "../../Contexts/contexts";
+import {PathFileContext} from "../../OtherJS/contexts";
 
 // scss import
 import "./index.scss"

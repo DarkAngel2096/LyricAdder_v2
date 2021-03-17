@@ -5,7 +5,7 @@ import {Route, Switch, useLocation} from "react-router-dom";
 // component imports
 import {routes, sidebarRoutes} from "./routes";
 import NotFound from "../Pages/NotFound/index";
-import {PathFileContext} from "../Contexts/contexts";
+import {PathFileContext} from "../OtherJS/contexts";
 import Sidebar from "../Organisms/Sidebar/index";
 
 // scss import
@@ -15,9 +15,12 @@ import "./App.scss";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {fas} from "@fortawesome/free-solid-svg-icons";
 
-library.add(fas);
-
 // other file imports
+window.api.subscribe("testingMain", (event, args) => {console.log(args)})
+console.log(window.api.request("testingMain", "Hello World!"));
+
+// a thing to add in the Font Awesome stuff to the project
+library.add(fas);
 
 // export the default function
 export default function App() {
@@ -27,12 +30,13 @@ export default function App() {
 	useEffect(() => {
 		console.log(location);
 		setRouteIndex(routes[routes.findIndex(el => el.path === location.pathname)]);
+
 	}, [location]);
 
 	return (
 		<div className="App">
 			<div className="App--Sidebar">
-				<PathFileContext.Provider value={routes[routeIndex] ?  routes[routeIndex].files : []}>
+				<PathFileContext.Provider value={routes[routeIndex] ? routes[routeIndex].files : []}>
 					<Sidebar sidebarRoutes={sidebarRoutes} currentPath={location.pathname}/>
 				</PathFileContext.Provider>
 			</div>
