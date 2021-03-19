@@ -3,7 +3,7 @@ import React, {Suspense, useState, useEffect} from "react";
 import {Route, Switch, useLocation} from "react-router-dom";
 
 // component imports
-import {routes, sidebarRoutes} from "./routes";
+import {routes} from "./routes";
 import NotFound from "../Pages/NotFound/index";
 import {PathFileContext} from "../OtherJS/contexts";
 import Sidebar from "../Organisms/Sidebar/index";
@@ -16,8 +16,6 @@ import {library} from "@fortawesome/fontawesome-svg-core";
 import {fas} from "@fortawesome/free-solid-svg-icons";
 
 // other file imports
-window.api.subscribe("testingMain", (event, args) => {console.log(args)})
-console.log(window.api.request("testingMain", "Hello World!"));
 
 // a thing to add in the Font Awesome stuff to the project
 library.add(fas);
@@ -25,26 +23,28 @@ library.add(fas);
 // export the default function
 export default function App() {
 	const location = useLocation();
-	const [routeIndex, setRouteIndex] = useState();
+	const [routeFiles, setRouteFiles] = useState({});
 
 	useEffect(() => {
 		console.log(location);
-		setRouteIndex(routes[routes.findIndex(el => el.path === location.pathname)]);
+		setRouteFiles(routes[routes.findIndex(el => el.path === location.pathname)].files || {});
 
 	}, [location]);
 
 	return (
 		<div className="App">
 			<div className="App--Sidebar">
-				<PathFileContext.Provider value={routes[routeIndex] ? routes[routeIndex].files : []}>
-					<Sidebar sidebarRoutes={sidebarRoutes} currentPath={location.pathname}/>
+				<PathFileContext.Provider value={routeFiles}>
+					<Sidebar routes={routes} currentPath={location.pathname}/>
 				</PathFileContext.Provider>
 			</div>
 			<div className="App--MainPage">
 				<Suspense fallback={<h1>Loading...</h1>}>
 					<Switch>
 						{routes.map((route, index) => {
-							return <Route exact path={route.path} component={route.component} key={`route-${index}`}/>
+							if (route.component) {
+								return <Route exact path={route.path} component={route.component} key={`route-${index}`}/>
+							} else return null;
 						})}
 						<Route component={NotFound}/>
 					</Switch>

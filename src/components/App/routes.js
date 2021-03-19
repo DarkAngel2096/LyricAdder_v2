@@ -5,36 +5,40 @@ import {lazy} from "react";
 const Home = lazy(() => import("../Pages/Home/index"));
 const LyricsEditor = lazy(() => import("../Pages/LyricsEditor/index"));
 
-// export the default array of routes
-export const routes =  [ {
-		path: "/lyrics/editor",
-		component: LyricsEditor,
-		files: ["chart", "ini"]
-	}, {
+/* explanation for the routes
+	required is "path" and "component" tags
+
+	if "name" is missing, it won't show up in the navbar
+	if "icon" is missing, a questionmark will be shown
+	if "files" is set, as object, it defines what's needed for the page
+*/
+
+// export all the routes
+export const routes = [ {
 		path: "/",
 		component: Home
-	}
-]
-
-export const sidebarRoutes = [ {
-		name: "Lyrics Editor",
-		path: "/lyrics/editor",
-		icon: "edit"
 	}, {
-		name: "Lyrics Preview",
+		path: "/lyrics/editor",
+		component: LyricsEditor,
+		name: "Lyrics Editor",
+		icon: "edit",
+		files: {chart: ["events"]}
+	}, {
 		path: "/lyrics/preview",
+		name: "Lyrics Preview",
 		icon: "music"
 	}, {
-		name: "Ini Editor",
 		path: "/ini/editor",
+		name: "Ini Editor",
 		icon: "file-alt"
 	}, {
-		name: "Settings",
 		path: "/settings",
+		name: "Settings",
 		icon: "cog"
 	}, {
-		name: "Themes",
 		path: "/themes",
-		icon: "user-edit"
+		name: "Themes",
+		icon: "user-edit",
+		files: {something: ["crazy..."]}
 	}
 ]

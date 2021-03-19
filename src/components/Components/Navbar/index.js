@@ -18,15 +18,16 @@ export default function Navbar({items, activeItem, collapsed, ...props}) {
 	return (
 		<div className="Navbar">
 			{items && items.map((item, index) => {
-
-				return (
-					<div className={`Navbar--Item ${activeItem === item.path ? "active" : ""}`} key={`NavItem-${index}`}>
-					<Link to={{pathname: item.path}}>
-						<FontAwesomeIcon icon={item.icon} className="Navbar--Item--Icon"/>
-							<p className={`${collapsed ? "collapsed" : ""}`}>{item.name}</p>
-						</Link>
-					</div>
-				)
+				if (item.name) {
+					return (
+						<div className={`Navbar--Item ${activeItem === item.path ? "active" : ""}`} key={`NavItem-${index}`}>
+							<Link to={{pathname: item.path}}>
+								<FontAwesomeIcon icon={item.icon ? item.icon : "question"} className="Navbar--Item--Icon"/>
+								<p className={`${collapsed ? "collapsed" : ""}`}>{item.name}</p>
+							</Link>
+						</div>
+					)
+				} else return null;
 			})}
 		</div>
 	)

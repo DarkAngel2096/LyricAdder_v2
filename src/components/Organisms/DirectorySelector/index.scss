@@ -1,4 +1,26 @@
 .DirectorySelector {
+	border: 5px solid rgba(100, 100, 0, 0.5);
+	background-color: rgba(100, 100, 0, 0.1);
+
+	&--Problems {
+		border: 5px solid rgba(255, 0, 0, 1);
+		background-color: rgba(255, 0, 0, 0.1);
+	}
+	
+	&--NoneSelected {
+		border-bottom: 5px solid rgba(255, 0, 0, 1);
+
+		.code {
+			font-family: monospace;
+			font-size: 1.25em;
+			margin: 0;
+		}
+
+		p {
+			margin: 0;
+		}
+	}
+
 	&--WorkingDir {
 		form, label {
 			cursor: pointer;

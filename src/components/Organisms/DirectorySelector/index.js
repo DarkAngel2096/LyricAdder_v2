@@ -1,5 +1,5 @@
 // react imports
-import React, {useState, useRef, useContext} from "react";
+import React, {useState, useEffect, useRef, useContext} from "react";
 
 // component improts
 import FileSelector from "../../Components/FileSelector/index";
@@ -9,12 +9,14 @@ import {PathFileContext} from "../../OtherJS/contexts";
 import "./index.scss"
 
 // other module imports
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 // other file imports
 
 // export the default function
-export default function DirectorySelector() {
+export default function DirectorySelector({collapsed = false, forceSidebarOpen, ...props}) {
 	const requiredFilesContext = useContext(PathFileContext);
+	const [missingRequiredFiles, setMissingRequiredFiles] = useState([]);
 
 	const [workPath, setWorkPath] = useState(null);
 	const workInputRef = useRef(null);
@@ -40,11 +42,30 @@ export default function DirectorySelector() {
 		console.log(`updated files`);
 	}
 
+	useEffect(() => {
+		let files = Object.keys(requiredFilesContext).filter(file => dirFiles[file] ? (dirFiles[file].main ? false : true) : true);
+		setMissingRequiredFiles(files);
+
+		if (files.length) {
+			console.log("forcing");
+			forceSidebarOpen(true);
+		} else {
+			forceSidebarOpen(false);
+		}
+		// eslint-disable-next-line
+	}, [requiredFilesContext, dirFiles]);
+
 	return (
-		<div className="DirectorySelector">
+		<div className={`DirectorySelector ${missingRequiredFiles.length > 0 ? "DirectorySelector--Problems" : ""}`}>
 			<div className="DirectorySelector--WorkingDir">
 				<form className="DirectorySelector--WorkingDir--Form" onClick={() => workInputRef.current.click()}>
-					<label>Select working directory</label>
+					{(missingRequiredFiles.length > 0 && !collapsed) && (
+						<div className="DirectorySelector--NoneSelected">
+							<p>Required files:<br/></p>
+							<p className="code">{missingRequiredFiles.join(", ")}</p>
+						</div>
+					)}
+					<label>{collapsed ? <FontAwesomeIcon icon="folder-open" size="2x" /> : "Select working directory"}</label>
 					<input
 						type="file"
 						className="DirectorySelector--WorkingDir--WorkDirInput"
@@ -52,7 +73,7 @@ export default function DirectorySelector() {
 						ref={workInputRef}
 						webkitdirectory=""/>
 				</form>
-				{workPath && (
+				{(workPath && !collapsed) && (
 					<div className="DirectorySelector--WorkingDir--WorkPath">
 						<p><span>Current dir:</span><br/>{workPath}</p>
 						{subFolders.length !== 0 && (
@@ -61,9 +82,10 @@ export default function DirectorySelector() {
 					</div>
 				)}
 			</div>
-			{dirFiles && Object.entries(dirFiles).map(type => {
+			{(dirFiles && !collapsed) && Object.entries(dirFiles).map(type => {
 				return (
-					<FileSelector data={type} key={type[0]} requiredFiles={requiredFilesContext.includes(type[0])} onFileSelected={handleFileSelection}/>
+					<FileSelector data={type} key={type[0]} onFileSelected={handleFileSelection}
+						requiredFiles={Object.keys(requiredFilesContext).includes(type[0])} />
 				)
 			})}
 		</div>

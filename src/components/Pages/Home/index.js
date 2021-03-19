@@ -16,10 +16,19 @@ export default function Home() {
 
 	return (
 		<Page name="Home">
-			<h1>Welcome to LyricAdder v2</h1>
-			<p>
-			Well then, we're back again, this time with a lot of updates but equally many new bugs to find...
-			</p>
+			<div className="content">
+				<h1>Welcome to LyricAdder v2</h1>
+				<p>
+				We're back here again?!<br/>
+				A LOT has changed, things should run a bit better and look a bit prettier too, hopefully...<br/><br/>
+				If anything breaks, or you have any ideas or thoughts,<br/>
+				PLEASE let me know, either by DM or on the LA Discord server<br/>
+				DarkAngel2096#0681 or <a href="https://discord.gg/bt2ntwx">Server link</a>
+				</p>
+				<div className="changelog">
+
+				</div>
+			</div>
 		</Page>
 	)
 }
