@@ -3,7 +3,9 @@ const { contextBridge, ipcRenderer } = require("electron");
 // allowed channels
 const validChannels = [
 	"testingMain",
-	"testingMain-reply"
+	"testingMain-reply",
+
+	"fileListeners"
 ];
 
 const validSyncChannels = [

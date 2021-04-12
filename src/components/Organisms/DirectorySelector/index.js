@@ -15,6 +15,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 // export the default function
 export default function DirectorySelector({collapsed = false, forceSidebarOpen, ...props}) {
+	// variables for this component
 	const requiredFilesContext = useContext(PathFileContext);
 	const [missingRequiredFiles, setMissingRequiredFiles] = useState([]);
 
@@ -24,6 +25,7 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 	const [dirFiles, setDirFiles] = useState({});
 	const [subFolders, setSubFolders] = useState();
 
+	// function for handling setting work directory
 	const handleWorkDir = () => {
 		if (workInputRef.current.files.length !== 0) {
 			setWorkPath(workInputRef.current.files[0].webkitRelativePath.split("/")[0]);
@@ -35,6 +37,7 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 		}
 	}
 
+	// function for handling single file selection from FileSelector component
 	const handleFileSelection = (data) => {
 		let tempData = Object.assign({}, dirFiles);
 		tempData[data.type].main = data.file;
@@ -42,6 +45,7 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 		setDirFiles(tempData);
 	}
 
+	// effect to show sidebar if required parts selected, update the sidebar, and check which files changed
 	useEffect(() => {
 		let files = Object.keys(requiredFilesContext).filter(file => dirFiles[file] ? ((dirFiles[file].main || dirFiles[file].total.length === 1) ? false : true) : true);
 		setMissingRequiredFiles(files);
@@ -52,9 +56,23 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 		} else {
 			forceSidebarOpen(false);
 		}
-		// eslint-disable-next-line
+	// eslint-disable-next-line
 	}, [requiredFilesContext, dirFiles]);
 
+	// effect to send files to main
+	useEffect(() => {
+		let tempData = {};
+
+		if (Object.keys(dirFiles).length) {
+			if (dirFiles.chart.main) tempData.chart = dirFiles.chart.main.path;
+			if (dirFiles.ini.main) tempData.ini = dirFiles.ini.main.path;
+
+			// @todo enable this when allowing file selects
+			//window.api.toMain("fileListeners", tempData)
+		}
+	}, [dirFiles]);
+
+	// react return
 	return (
 		<div className={`DirectorySelector ${missingRequiredFiles.length > 0 ? "DirectorySelector--Problems" : ""}`}>
 			<div className="DirectorySelector--WorkingDir">
@@ -71,7 +89,7 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 							? (
 								Object.keys(dirFiles).length
 								? <FontAwesomeIcon icon="folder-open" size="2x"/>
-								: <FontAwesomeIcon icon="folder" size="2x"/>) 
+								: <FontAwesomeIcon icon="folder" size="2x"/>)
 							: "Select working directory"
 						}
 					</label>
@@ -103,10 +121,15 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 
 // function for splitting up the files in the working directory selected
 function splitFiles(action) {
-	let files = {chart: {total: [], main: null}, audio: {total: [], main: null}, ini: {total: [], main: null}, image: {total: [], main: null}}
+	let files = {
+		chart: {total: [], main: null},
+		audio: {total: [], main: null},
+		ini: {total: [], main: null},
+		image: {total: [], main: null}
+	}
 	let folders = [];
 
-
+	// loop for going through and setting all files
 	Array.from(action).forEach(file => {
 		let currentFolderPathArr = file.webkitRelativePath.split("/");
 
@@ -139,6 +162,13 @@ function splitFiles(action) {
 			if (!folders.includes(tempCurPath)) {folders.push(tempCurPath)}
 		}
 	});
+
+	// secondary loop just checking if only one file of a specific file set, in that case also make it main
+	for (let key of Object.keys(files)) {
+		if (files[key].total.length === 1 && !files[key].main) {
+			files[key].main = files[key].total[0];
+		}
+	}
 
 	//console.log(`subfolders found:`);
 	//console.log(folders);
