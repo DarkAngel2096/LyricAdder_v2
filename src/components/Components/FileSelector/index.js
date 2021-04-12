@@ -30,7 +30,13 @@ export default function FileSelector({data, requiredFiles, onFileSelected, ...pr
 			key={data[0]} onClick={() => inputRef.current.click()}>
 
 			<form className="FileSelector--Form">
-				<label>{data[1].main ? `->${data[1].main.name}<-`: `Select "${data[0]}"`}</label>
+				<label>
+					{
+						(data[1].main || data[1].total.length === 1)
+						? `->${(data[1].main ? `${data[1].main.name}` : `${data[1].total[0].name}`)}<-`
+						: `Select "${data[0]}"`
+					}
+				</label>
 				<input
 					type="file"
 					className="FileSelector--FileInput"

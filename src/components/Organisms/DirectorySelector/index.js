@@ -29,21 +29,21 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 			setWorkPath(workInputRef.current.files[0].webkitRelativePath.split("/")[0]);
 			let fileReturn = splitFiles(workInputRef.current.files);
 
+			console.log(fileReturn.files);
 			setDirFiles(fileReturn.files);
 			setSubFolders(fileReturn.subFolders);
 		}
 	}
 
 	const handleFileSelection = (data) => {
-		let tempFiles = dirFiles;
-		tempFiles[data.type].main = data.file;
+		let tempData = Object.assign({}, dirFiles);
+		tempData[data.type].main = data.file;
 
-		setDirFiles(tempFiles);
-		console.log(`updated files`);
+		setDirFiles(tempData);
 	}
 
 	useEffect(() => {
-		let files = Object.keys(requiredFilesContext).filter(file => dirFiles[file] ? (dirFiles[file].main ? false : true) : true);
+		let files = Object.keys(requiredFilesContext).filter(file => dirFiles[file] ? ((dirFiles[file].main || dirFiles[file].total.length === 1) ? false : true) : true);
 		setMissingRequiredFiles(files);
 
 		if (files.length) {
@@ -65,7 +65,16 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 							<p className="code">{missingRequiredFiles.join(", ")}</p>
 						</div>
 					)}
-					<label>{collapsed ? <FontAwesomeIcon icon="folder-open" size="2x" /> : "Select working directory"}</label>
+					<label>
+						{
+							collapsed
+							? (
+								Object.keys(dirFiles).length
+								? <FontAwesomeIcon icon="folder-open" size="2x"/>
+								: <FontAwesomeIcon icon="folder" size="2x"/>) 
+							: "Select working directory"
+						}
+					</label>
 					<input
 						type="file"
 						className="DirectorySelector--WorkingDir--WorkDirInput"

@@ -28,7 +28,6 @@ export default function App() {
 	useEffect(() => {
 		console.log(location);
 		setRouteFiles(routes[routes.findIndex(el => el.path === location.pathname)].files || {});
-
 	}, [location]);
 
 	return (

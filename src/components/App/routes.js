@@ -26,7 +26,8 @@ export const routes = [ {
 	}, {
 		path: "/lyrics/preview",
 		name: "Lyrics Preview",
-		icon: "music"
+		icon: "music",
+		files: {chart: ["song", "synctrack", "events"], audio: []}
 	}, {
 		path: "/ini/editor",
 		name: "Ini Editor",
@@ -38,7 +39,6 @@ export const routes = [ {
 	}, {
 		path: "/themes",
 		name: "Themes",
-		icon: "user-edit",
-		files: {something: ["crazy..."]}
+		icon: "user-edit"
 	}
 ]
