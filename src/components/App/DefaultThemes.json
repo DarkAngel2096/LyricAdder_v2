@@ -1,0 +1,10 @@
+{
+	"dark": {
+		"background-color": "#000000",
+		"color": "#FFFFFF"
+	},
+	"light": {
+		"background-color": "#FFFFFF",
+		"color": "#000000"
+	}
+}

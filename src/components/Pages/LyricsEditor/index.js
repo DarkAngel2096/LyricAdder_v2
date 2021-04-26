@@ -32,6 +32,7 @@ export default function LyricsEditor() {
 				<form onSubmit={handleTextarea}>
 					<TextareaAutozise
 						className="Lyrics--Textarea"
+						//onChange={handleChange}
 						minRows="10" maxRows="40"
 						placeholder={`A placeholder text\non multiple lines`}/>
 				</form>

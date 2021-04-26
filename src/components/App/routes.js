@@ -4,6 +4,8 @@ import {lazy} from "react";
 // component imports
 const Home = lazy(() => import("../Pages/Home/index"));
 const LyricsEditor = lazy(() => import("../Pages/LyricsEditor/index"));
+const Settings = lazy(() => import("../Pages/Settings/index"));
+const Themes = lazy(() => import("../Pages/Themes/index"));
 
 /* explanation for the routes
 	required is "path" and "component" tags
@@ -34,10 +36,12 @@ export const routes = [ {
 		icon: "file-alt"
 	}, {
 		path: "/settings",
+		component: Settings,
 		name: "Settings",
 		icon: "cog"
 	}, {
 		path: "/themes",
+		component: Themes,
 		name: "Themes",
 		icon: "user-edit"
 	}
