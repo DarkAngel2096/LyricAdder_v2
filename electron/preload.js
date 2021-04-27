@@ -9,7 +9,7 @@ const validChannels = [
 ];
 
 const validSyncChannels = [
-
+	"syncGetThemes"
 ]
 
 contextBridge.exposeInMainWorld ("api", {

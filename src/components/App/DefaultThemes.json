@@ -1,10 +1,12 @@
 {
 	"dark": {
-		"background-color": "#000000",
-		"color": "#FFFFFF"
+		"app-background-color": "#333333",
+		"app-text-color": "#FFFFFF",
+		"sidebar-background-color": "#222222"
 	},
 	"light": {
-		"background-color": "#FFFFFF",
-		"color": "#000000"
+		"app-background-color": "#FFFFFF",
+		"app-text-color": "#000000",
+		"sidebar-background-color": "#CCCCCC"
 	}
 }

@@ -19,11 +19,11 @@ export default function LyricsEditor() {
 	const handleTextarea = (data) => {
 		console.log(data);
 	}
-
+/*
 	// handle textarea change
 	const handleChange = (data) => {
 		console.log(data);
-	}
+	}*/
 
 	return (
 		<Page name="Lyrics Editor">

@@ -180,7 +180,7 @@ function checkAppdataFiles() {
 	}
 
 	// check for default themes file
-	if (!fs.existsSync(appdataPath + "/App files/customThemes.json")) {
+	if (!fs.existsSync(appdataPath + "/App Files/customThemes.json")) {
 		console.log("missing custom themes file");
 		fs.writeFileSync(appdataPath + "/App Files/customThemes.json", JSON.stringify({}), "utf8", (err) => {
 			console.log(err);
@@ -213,5 +213,8 @@ const defaultConfig = {
 		size: { height: 800, width: 1000 },
 		position: { x: null, y: null },
 	},
-	currentTheme: "Default Dark"
+	themes: {
+		default: "dark",
+		custom: null
+	}
 }
