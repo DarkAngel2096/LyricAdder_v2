@@ -108,6 +108,9 @@ app.on("activate", () => {
 
 // function to write the size to the config
 function sizePosWrite() {
+	// do a quick re-read of the config before changing the values, that way if themes or anything changed, it doesn't change those
+	config = JSON.parse(fs.readFileSync(app.getPath("userData") + "/App Files/config.json"), "utf8");
+
 	// get the position and size
 	let pos = mainWindow.getPosition();
 	let size = mainWindow.getSize();

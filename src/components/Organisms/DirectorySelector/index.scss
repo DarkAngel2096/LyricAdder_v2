@@ -1,14 +1,14 @@
 .DirectorySelector {
-	border: 5px solid rgba(100, 100, 0, 0.5);
-	background-color: rgba(100, 100, 0, 0.1);
+	border: 5px solid var(--sidebar-direcorselector-border);
+	background-color: var(--sidebar-direcorselector-background);
 
 	&--Problems {
-		border: 5px solid rgba(255, 0, 0, 1);
-		background-color: rgba(255, 0, 0, 0.1);
+		border: 5px solid var(--sidebar-direcorselector-problems-border);
+		background-color: var(--sidebar-direcorselector-problems-background);
 	}
 
 	&--NoneSelected {
-		border-bottom: 5px solid rgba(255, 0, 0, 1);
+		border-bottom: 5px solid var(--sidebar-direcorselector-nonselected-border);
 
 		.code {
 			font-family: monospace;
@@ -31,7 +31,7 @@
 		}
 
 		&--WorkPath {
-			border-top: 2px solid rgba(0, 0, 0, 0.5);
+			border-top: 2px solid var(--sidebar-direcorselector-workpath-border);
 			font-family: monospace;
 
 			p {
@@ -43,7 +43,7 @@
 			}
 
 			&--SubFolders {
-				border: 5px solid rgba(255, 100, 0, 0.75);
+				border: 5px solid var(--sidebar-direcorselector-subfolders-border);
 				font-size: 1.25em;
 			}
 		}

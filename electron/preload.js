@@ -5,7 +5,8 @@ const validChannels = [
 	"testingMain",
 	"testingMain-reply",
 
-	"fileListeners"
+	"fileListeners",
+	"setConfigTheme"
 ];
 
 const validSyncChannels = [

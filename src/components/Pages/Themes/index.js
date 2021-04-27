@@ -1,8 +1,9 @@
 // react imports
-import React, {useState, useEffect} from "react";
+import React, {useContext} from "react";
 
 // component improts
 import Page from "../../Organisms/Page/index";
+import {ThemeContext} from "../../OtherJS/contexts";
 
 // scss import
 import "./index.scss"
@@ -10,50 +11,52 @@ import "./index.scss"
 // other module imports
 
 // other file imports
-import * as themeJSON from "../../App/DefaultThemes.json";
 
 // export the default function
 export default function Themes() {
-	const [currentTheme, setCurrentTheme] = useState(null);
-	const [customThemes, setCustomThemes] = useState(null);
-
-	// on first call get themes data from config
-	useEffect(() => {
-		let data = window.api.toMainSync("syncGetThemes");
-		setCurrentTheme(data.current);
-		setCustomThemes(data.customThemes);
-	}, []);
-
-	// function to set the theme values to root
-	useEffect(() => {
-		if (themeJSON.default) {
-			let root = document.documentElement;
-
-			for (let [key, value] of Object.entries(themeJSON.default[currentTheme ? currentTheme.default : "dark"])) {
-				root.style.setProperty(`--${key}`, value);
-			}
-		}
-	}, [currentTheme]);
+	const themeContext = useContext(ThemeContext);
 
 	// function to handle default theme change
 	const handleDefaultThemeChange = (data) => {
-		let current = JSON.parse(JSON.stringify(currentTheme));
+		let current = JSON.parse(JSON.stringify(themeContext.currentTheme));
 		current.default = data.target.value;
-		setCurrentTheme(current);
+		themeContext.setCurrentTheme(current);
+	}
+
+	// function to handle custom theme change
+	const handleCustomThemeChange = (data) => {
+		let current = JSON.parse(JSON.stringify(themeContext.currentTheme));
+		current.custom = data.target.value === "None" ? null : data.target.value;
+		themeContext.setCurrentTheme(current);
 	}
 
 	return (
 		<Page name="Themes">
 			<h1>Welcome to custom themes!</h1>
-			<div className="ThemeSelector">
-				<form>
-					<label htmlFor="ThemeSelect">Select default theme:</label>
-					<select className="ThemeSelect" defaultValue={themeJSON.default || ""} onChange={handleDefaultThemeChange}>
-						{themeJSON && Object.keys(themeJSON.default).map(key => {
-							return <option value={key} key={key}>{key}</option>
-						})}
-					</select>
-				</form>
+			<div className="ThemeSelectors">
+				<label htmlFor="ThemeSelectors--Default--Label">Select default theme: </label>
+				<select
+					className="ThemeSelectors--Default"
+					defaultValue={themeContext.currentTheme.default || ""}
+					onChange={handleDefaultThemeChange}>
+					{themeContext.defaultThemes && Object.keys(themeContext.defaultThemes).map(key => {
+						return <option value={key} key={key}>{key}</option>
+					})}
+				</select>
+				{Object.keys(themeContext.customThemes).length > 0 && (
+					<>
+						<label htmlFor="ThemeSelectors--Custom--Label">Select custom theme: </label>
+						<select
+							className="ThemeSelectors--Custom"
+							defaultValue={themeContext.currentTheme.custom || ""}
+							onChange={handleCustomThemeChange}>
+							<option value={null}>None</option>
+							{themeContext.customThemes && Object.keys(themeContext.customThemes).map(key => {
+								return <option value={key} key={key}>{key}</option>
+							})}
+						</select>
+					</>
+				)}
 			</div>
 		</Page>
 	)

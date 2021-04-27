@@ -9,7 +9,7 @@
 	&--MainPage {
 		width: 100%;		// moves the "main page" to the right enough so it doesn't get hidden behind anything
 		vertical-align: top;
-		background-color: var(--app-background-color);
-		color: var(--app-text-color);
+		background-color: var(--page-background);
+		color: var(--page-text);
 	}
 }

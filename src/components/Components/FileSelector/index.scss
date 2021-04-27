@@ -1,6 +1,6 @@
 .FileSelector {
-	border: 5px solid rgba(0, 200, 0, 0.75);
-	background-color: rgba(0, 200, 0, 0.15);
+	border: 5px solid var(--sidebar-fileselector-border);
+	background-color: var(--sidebar-fileselector-background);
 
 	cursor: pointer;
 
@@ -9,13 +9,13 @@
 	}
 
 	&--Warn {
-		border: 5px solid rgba(255, 200, 0, 0.75);
-		background-color: rgba(255, 200, 0, 0.15);
+		border: 5px solid var(--sidebar-fileselector-warn-border);
+		background-color: var(--sidebar-fileselector-warn-background);
 	}
 
 	&--Needed {
-		border: 5px solid rgba(200, 0, 0, 0.75);
-		background-color: rgba(255, 0, 0, 0.15);
+		border: 5px solid var(--sidebar-fileselector-needed-border);
+		background-color: var(--sidebar-fileselector-needed-background);
 	}
 
 	/*&--Form {
@@ -39,6 +39,6 @@
 	&--OutsideDir {
 		font-family: monospace;
 		margin: 0;
-		color: #FF0000;
+		color: var(--sidebar-fileselector-outsidedir-text);
 	}
 }

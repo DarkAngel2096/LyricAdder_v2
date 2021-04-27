@@ -8,18 +8,18 @@
 	display: flex;
 	flex-direction: column;
 
-	//border-right: 5px solid rgba(0, 0, 0, 0.5);
-	background-color: rgba(0, 0, 0, 0.1);
+	background-color: var(--sidebar-background);
+	color: var(--sidebar-text);
 
 	&--Header {
-		border: 5px solid rgba(0, 100, 100, 0.5);
-		background-color: rgba(0, 100, 100, 0.1);
+		border: 5px solid var(--sidebar-header-border);
+		background-color: var(--sidebar-header-background);
 
 		cursor: pointer;
 		padding: 5px;
 
 		svg {
-			color: blue;
+			color: var(--sidebar-header-svg);
 			flex-basis: 1.5em;
 			font-size: 1.75em;
 		}
@@ -30,8 +30,8 @@
 	}
 
 	&--Navbar {
-		border: 5px solid rgba(150, 50, 100, 0.5);
-		background-color: rgba(150, 50, 100, 0.1);
+		border: 5px solid var(--sidebar-navbar-border);
+		background-color: var(--sidebar-navbar-background);
 	}
 
 	&--DirectorySelector {
@@ -46,14 +46,14 @@
 		height: 60px;
 		top: 40%;
 		border-radius: 50%;
-		border: 5px solid rgba(0, 100, 100, 0.5);
-		background-color: rgba(255, 255, 255, 1);
+		border: 5px solid var(--sidebar-collapse-border);
+		background-color: var(--sidebar-collapse-background);
 
 		svg {
 			position: inherit;
 			left: 35px;
 			top: 6px;
-			color: green;
+			color: var(--sidebar-collapse-svg);
 			flex-basis: 1.5em;
 			font-size: 3em;
 		}

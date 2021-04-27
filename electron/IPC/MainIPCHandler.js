@@ -15,9 +15,29 @@ ipcMain.on("fileListeners", (event, ...args) => {
 // sync call for themes
 ipcMain.on("syncGetThemes", (event, ...args) => {
 	// read the config and custom themes files
-	const config = JSON.parse(fs.readFileSync(app.getPath("userData") + "/App Files/config.json"), "utf8", (err) => {console.log(err);});
-	const customThemes = JSON.parse(fs.readFileSync(app.getPath("userData") + "/App Files/customThemes.json"), "utf8", (err) => {console.log(err);});
+	const config = JSON.parse(fs.readFileSync(app.getPath("userData") + "/App Files/config.json"), "utf8", (err) => {
+		console.log(err);
+	});
+	const customThemes = JSON.parse(fs.readFileSync(app.getPath("userData") + "/App Files/customThemes.json"), "utf8", (err) => {
+		console.log(err);
+	});
 
 	// return the values
 	event.returnValue = {current: config.themes, customThemes: customThemes}
+});
+
+// call to set theme object of config
+ipcMain.on("setConfigTheme", (event, ...args) => {
+	// read the config to get the data currently there
+	const config = JSON.parse(fs.readFileSync(app.getPath("userData") + "/App Files/config.json"), "utf8", (err) => {
+		console.log(err);
+	});
+
+	// set the new values from args
+	config.themes = args[0];
+
+	// and write the new file
+	fs.writeFileSync(app.getPath("userData") + "/App Files/config.json", JSON.stringify(config, null, "\t"), "utf8", (err) => {
+		console.log(err);
+	});
 });

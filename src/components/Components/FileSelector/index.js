@@ -54,7 +54,8 @@ export default function FileSelector({data, requiredFiles, onFileSelected, ...pr
 			<p className="FileSelector--OutsideDir">
 				{
 					((data[1].total.length === 0 && data[1].main) ||
-					((data[1].main && data[1].total.length) && !data[1].total[0].path.startsWith(data[1].main.path.split("/").splice(0, -1).join("/")))
+					((data[1].main && data[1].total.length) &&
+					!data[1].total[0].path.replace(/\\/g, "/").startsWith(data[1].main.path.replace(/\\/g, "/").split("/").slice(0, -1).join("/")))
 					) ? "Outside work dir" : ""
 				}
 			</p>
