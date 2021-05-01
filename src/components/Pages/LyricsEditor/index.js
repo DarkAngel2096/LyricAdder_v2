@@ -1,12 +1,13 @@
 // react imports
-import React from "react";
+import React, { useState } from "react";
 
 // component improts
 import Page from "../../Organisms/Page/index";
-import TextareaAutozise from "react-textarea-autosize";
+import { Editor, EditorState, RichUtils } from "draft-js";
 
 // scss import
-import "./index.scss"
+import "./index.scss";
+import "draft-js/dist/Draft.css";
 
 // other module imports
 
@@ -14,28 +15,35 @@ import "./index.scss"
 
 // export the default function
 export default function LyricsEditor() {
+	const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
-	// function for handing textarea form
-	const handleTextarea = (data) => {
+	const handleKeyPress = (data) => {
 		console.log(data);
+
+		setEditorState(RichUtils.handleKeyCommand(editorState, data));
 	}
-/*
-	// handle textarea change
-	const handleChange = (data) => {
-		console.log(data);
-	}*/
+
+	const setBold = (data) => {
+		setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+	}
+
+	const postData = () => {
+		console.log("current state: ", editorState.getCurrentInlineStyle());
+	}
 
 	return (
 		<Page name="Lyrics Editor">
 			<div className="Lyrics">
 				<h1>oh hai :)</h1>
-				<form onSubmit={handleTextarea}>
-					<TextareaAutozise
-						className="Lyrics--Textarea"
-						//onChange={handleChange}
-						minRows="10" maxRows="40"
-						placeholder={`A placeholder text\non multiple lines`}/>
-				</form>
+				<div className="Lyrics--EditorArea">
+					<button onClick={setBold}>Bold</button>
+					<button onClick={postData}>data</button>
+
+					<Editor
+						editorState={editorState}
+						onChange={setEditorState}
+						handleKeyCommand={handleKeyPress}/>
+				</div>
 			</div>
 		</Page>
 	)
