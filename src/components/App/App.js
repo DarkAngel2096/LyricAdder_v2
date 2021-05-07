@@ -34,7 +34,6 @@ export default function App() {
 
 	// effect for changing files needed on location change
 	useEffect(() => {
-		console.log(location);
 		setRouteFiles(routes[routes.findIndex(el => el.path === location.pathname)].files || {});
 	}, [location]);
 

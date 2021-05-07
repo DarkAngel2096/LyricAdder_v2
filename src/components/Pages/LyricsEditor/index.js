@@ -1,9 +1,9 @@
 // react imports
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 
 // component improts
 import Page from "../../Organisms/Page/index";
-import { Editor, EditorState, RichUtils } from "draft-js";
+import { Editor, EditorState, RichUtils, KeyBindingUtil, getDefaultKeyBinding, convertToRaw } from "draft-js";
 
 // scss import
 import "./index.scss";
@@ -15,20 +15,79 @@ import "draft-js/dist/Draft.css";
 
 // export the default function
 export default function LyricsEditor() {
+	const draftRef = useRef(null);
 	const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
-	const handleKeyPress = (data) => {
-		console.log(data);
+	// function to handling keybinds
+	const handleKeyCommand = (data) => {
+		//console.log(data);
 
-		setEditorState(RichUtils.handleKeyCommand(editorState, data));
+		if (data === "SINGLE_EVENT") {
+			setEditorState(RichUtils.toggleInlineStyle(editorState, data));
+		} else {
+			setEditorState(RichUtils.handleKeyCommand(editorState, data));
+		}
 	}
 
-	const setBold = (data) => {
-		setEditorState(RichUtils.toggleInlineStyle(editorState, "BOLD"));
+	// function setting custom keybinds to be handled above
+	const customKeyBinds = (event) => {
+		if (event.keyCode === 83 /* "S" key */ && KeyBindingUtil.hasCommandModifier(event)) {
+			return "SINGLE_EVENT";
+		}
+		return getDefaultKeyBinding(event);
 	}
 
+	// function to setting styles on the editor from the buttons
+	const setDraftState = (event) => {
+		event.preventDefault();
+		let style = event.currentTarget.getAttribute("data");
+		setEditorState(RichUtils.toggleInlineStyle(editorState, style));
+	}
+
+	// custom styles for the custom parts
+	const customStyleMap = {
+		"SINGLE_EVENT": {
+			backgroundColor: "rgba(100, 100, 255, 1)"
+		}
+	}
+
+	// handling focusing on the area
+	const handleAreaClick = () => {
+		if (draftRef.current) {
+			// @todo get the focus stuff working
+			/*console.log("focus trigger");
+			if (!editorState.getSelection().getHasFocus()) {
+				console.log("setting focus");
+				setEditorState(EditorState.moveFocusToEnd(editorState));
+			}*/
+			draftRef.current.focus();
+		}
+	}
+
+	// setup a simpler/cleaner way to show the buttons for styles
+	// function which returns the button itself
+	const createStyleButton = (name, style) => {
+		return (
+			<button
+				onMouseDown={setDraftState} data={style} key={style}
+				className={`Lyrics--EditorArea--Button${editorState.getCurrentInlineStyle().has(style) ? "--active" : ""}`}
+			>{name}</button>
+		)
+	}
+
+	// list of button data
+	const buttonData = [
+		{ style: "BOLD" , name: <b>B</b> },
+		{ style: "ITALIC" , name: <i>I</i> },
+		{ style: "UNDERLINE" , name: <u>U</u> },
+		{ style: "SINGLE_EVENT", name: <span style={{backgroundColor: "rgba(100, 100, 255, 1)"}}>Single event</span>}
+	]
+
+
+
+	// temp button to just show the current content
 	const postData = () => {
-		console.log("current state: ", editorState.getCurrentInlineStyle());
+		console.log("current state: ", convertToRaw(editorState.getCurrentContent()));
 	}
 
 	return (
@@ -36,13 +95,25 @@ export default function LyricsEditor() {
 			<div className="Lyrics">
 				<h1>oh hai :)</h1>
 				<div className="Lyrics--EditorArea">
-					<button onClick={setBold}>Bold</button>
+					{buttonData.map((elem) => {
+						return createStyleButton(elem.name, elem.style);
+					})}
 					<button onClick={postData}>data</button>
 
-					<Editor
-						editorState={editorState}
-						onChange={setEditorState}
-						handleKeyCommand={handleKeyPress}/>
+					<div className="Lyrics--EditorArea--Editor" onClick={handleAreaClick}>
+						<Editor
+							ref={draftRef}
+							editorState={editorState}
+							onChange={setEditorState}
+							keyBindingFn={customKeyBinds}
+							handleKeyCommand={handleKeyCommand}
+							customStyleMap={customStyleMap}
+							placeholder={
+								`Type your lyrics in here\n` +
+								`Each phrase on their own line\n` +
+								`With syl-lab-les sep-a-rat-ed by hy-phens`}
+							/>
+					</div>
 				</div>
 			</div>
 		</Page>

@@ -68,7 +68,7 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 			if (dirFiles.ini.main) tempData.ini = dirFiles.ini.main.path;
 
 			// @todo enable this when allowing file selects
-			//window.api.toMain("fileListeners", tempData)
+			window.api.toMain("fileListeners", tempData)
 		}
 	}, [dirFiles]);
 

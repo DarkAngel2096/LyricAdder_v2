@@ -1,3 +1,19 @@
-.Lyrics--EditorArea {
-	border: 5px solid rgba(100, 100, 100, 1);
+.Lyrics {
+	&--EditorArea {
+		border: 5px solid rgba(100, 100, 100, 1);
+
+		&--Button {
+
+			&--active {
+				background-color: turquoise;
+			}
+		}
+
+		&--Editor {
+			border: 5px solid red;
+			min-height: 10em;
+			cursor: text;
+			padding: 10px;
+		}
+	}
 }

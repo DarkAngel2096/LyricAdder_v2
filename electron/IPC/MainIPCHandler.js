@@ -1,15 +1,15 @@
+// module requires
 const {app, ipcMain} =  require("electron");
 const fs = require("fs");
 
-ipcMain.on("testingMain", (event, ...args) => {
-	console.log(args);
-	event.reply("testingMain-reply", "Hi!");
-});
+const watchers = require("./../DataParsers/FileWatchers");
 
-
+/*
+	Below is all the ipc handlers for all the different things coming from the renderer process
+*/
 // ipc for file handling
-ipcMain.on("fileListeners", (event, ...args) => {
-	console.log("time to set up file listeners for: ", args);
+ipcMain.on("fileListeners", (event, tempData, ...args) => {
+	watchers.setupWatchers(tempData)
 });
 
 // sync call for themes
