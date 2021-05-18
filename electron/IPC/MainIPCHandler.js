@@ -8,8 +8,8 @@ const watchers = require("./../DataParsers/FileWatchers");
 	Below is all the ipc handlers for all the different things coming from the renderer process
 */
 // ipc for file handling
-ipcMain.on("fileListeners", (event, tempData, ...args) => {
-	watchers.setupWatchers(tempData)
+ipcMain.on("fileListeners", (event, paths, ...args) => {
+	watchers.setupWatchers(paths)
 });
 
 // sync call for themes
