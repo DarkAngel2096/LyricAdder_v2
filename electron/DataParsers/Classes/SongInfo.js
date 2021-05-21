@@ -7,19 +7,28 @@ class SongInfo {
 	year                (int)       = year when the album was released
 	genre               (string)    = genre for the music
 	charter             (string)    = charter name
-	resolution			(int)		= the resolution / ticks per beat value
-	otherParts			(string)	= all of the other parts which have not been taken into consideration
+	resolution			(int)		= resolution / ticks per beat value
+	Offset				(int)		= offset, should always be 0, otherwise generally messes up things
+	difficulty			(int)		= difficulty given
+	previewStat			(int)		= start point of the preview in ms
+	previewEnd			(int)		= end point of the preview in ms
+
+	otherParts			(array)		= all of the other parts which have not been taken into consideration
 	*/
 
-	constructor (songName, artistName, albumName, year, genre, charter, resolution,  other) {
-		this.songName = songName;
-		this.artistName = artistName;
-		this.albumName = albumName;
-		this.year = year;
-		this.genre = genre;
-		this.charter = charter;
-		this.resolution = resolution;
-		this.otherParts = other;
+	constructor (data) {
+		this.songName = data.Name;
+		this.artistName = data.Artist;
+		this.albumName = data.Album;
+		this.year = data.Year;
+		this.genre = data.Genre;
+		this.charter = data.Charter;
+		this.resolution = data.Resolution;
+		this.offset = data.Offset;
+		this.difficulty = data.Difficulty;
+		this.previewStart = data.PreviewStart;
+		this.previewEnd = data.PreviewEnd;
+		this.otherParts = data.other;
 	}
 }
 

@@ -64,11 +64,11 @@ function chartWatcherFunc({path}) {
 		}
 	});
 
-	/*// just kill the watcher after a second for testing purposes
+	// just kill the watcher after a second for testing purposes
 	setTimeout(() => {
 		console.log("killing watcher");
 		chartWatcher.close();
-	}, 1000);*/
+	}, 1000);
 }
 
 

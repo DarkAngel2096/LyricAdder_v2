@@ -10,10 +10,6 @@ class BPM extends BaseEvent {
 		super (tick, "bpm", true);
 		this.bpm = bpm;
 	}
-/*
-	set bpm (bpm) {
-		this.bpm = bpm * 1000;
-	}*/
 }
 
 module.exports = {BPM}

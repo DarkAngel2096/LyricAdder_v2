@@ -6,6 +6,7 @@ const {SongInfo} = require ("./../Classes/SongInfo.js");
 const {Note} = require ("./../Classes/Note.js");
 const {StarPower} = require ("./../Classes/StarPower.js");
 const {BPM} = require ("./../Classes/BPM.js");
+const {Anchor} = require ("./../Classes/Anchor.js");
 const {TimeSignature} = require ("./../Classes/TimeSignature.js");
 // events
 const {BaseEvent} = require ("./../Classes/BaseEvent.js");
@@ -22,6 +23,9 @@ const {SoloEndEvent} = require ("./../Classes/SoloEndEvent.js");
 let splitData = { song: [], synctrack: [], events: [], notes: {} };
 // object to keep track of what's been updated
 let changedData = { song: false, synctrack: false, events: false, notes: false };
+
+// the parsed data
+let parsedData = { song: [], synctrack: [], events: [], notes : {} };
 
 // function to read the chart file
 function readChart(path) {
@@ -52,22 +56,25 @@ function readChart(path) {
 	console.log("\nStarting to parse data...");
 	// next up parsing each tag if it's been changed
 	if (changedData.song) {
-		console.log("Song");
-		parseSongData();
+		console.log(`"Song"`);
+		parsedData.song = parseSongData(splitData.song);
 	}
 	if (changedData.synctrack) {
-		console.log("SyncTrack");
-		parseSyncTrackData();
+		console.log(`"SyncTrack"`);
+		parsedData.synctrack = parseSyncTrackData(splitData.synctrack);
 	}
 	if (changedData.events) {
-		console.log("Events");
-		parseEventsData();
+		console.log(`"Events"`);
+		parsedData.events = parseEventData(splitData.events);
 	}
 	if (changedData.notes) { // not being parsed for the time being, since not used
-		console.log("Notes (not parsed)...");
-		//parseNotesData();
+		console.log(`"Notes (not parsed)..."`);
+		//parsedData.notes = parseNoteData();
 	}
 
+
+	console.log("\nParsed data below");
+	//console.log(parsedData);
 
 
 
@@ -76,7 +83,7 @@ function readChart(path) {
 
 // helper function for readChart for splitting up the data and checking what's changed
 function splitAndFindChanges(data) {
-	console.log(`\nSplitting:`);
+	console.log(`\nSplitting...`);
 	// find all the {, the data chunk name is on the index before {
 	let indices = [];
 	const elem = "{";
@@ -147,20 +154,49 @@ function arrayNotEquals(data, split) {
 
 
 // parser functions for the data
-function parseSongData() {
+function parseSongData(unparsedData) {
+	// variable for the data found
+	let parsedData = { other: [] };
+
+	// loop through the unparsed parts
+	for (let line of unparsedData) {
+		// split up the data with the first = and trim any whitespace
+		// first part becoming the key variable, the other part into data
+		let [key, data] = line.split(/=(.+)/).filter(elem => elem.length > 0).map(elem => elem.trim());
+
+		// find the special values I want to split out, otherwise just add in them as object to a "other" tag
+		if (key.toLowerCase().match(/name|artist|album|genre|charter/)) { // just string values so has quotes before and after
+			parsedData[key] = { key: key, value: data.replace(/^\"|\"$/g, "") };
+		} else if (key.toLowerCase().match(/year|resolution|offset|difficulty|preview.*/)) { // numerical values
+			parsedData[key] = { key: key, value: parseInt(data.replace(/\D/g, ""))}
+		} else {
+			parsedData.other.push({ key: key, value: data});
+		}
+	}
+	return new SongInfo(parsedData);
+}
+
+function parseSyncTrackData(unparsedData) {
+	console.log(unparsedData);
+
+	// loop through the data
+	for (let data of unparsedData) {
+		let parsed = tagParse(data);
+	}
+}
+
+function parseEventData(unparsedData) {
 
 }
 
-function parseSyncTrackData() {
+function parseNoteData(unparsedData) { // unused for the time being
 
 }
 
-function parseEventData() {
-
-}
-
-function parseNotesData() { // unused for the time being
-
+// helper function for parsing tags with ticks
+function tagParse(data) {
+	console.log(data);
+	let [tick, tag, data] = data.trim().split()
 }
 
 
