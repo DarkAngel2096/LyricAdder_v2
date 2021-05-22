@@ -13,7 +13,8 @@ let iniWatcher = null;
 // temp paths
 const chartPath = "E:\\Games\\Clone Hero\\Songs\\Marathon Hero 2\\Marathon Hero 2\\32 - Let Me Tell You a Story\\Ayreon - The Forever Saga\\notes.chart";
 const chartPath2 = "E:\\Games\\Clone Hero\\Custom songs\\Charts In Progress\\test charts\\notes.chart";
-setupWatchers({chart: chartPath2});
+const laptopPath = "C:\\Users\\Administrator\\Downloads\\Arch Enemy - The Eagle Flies Alone\\notes.chart";
+setupWatchers({chart: laptopPath});
 
 
 

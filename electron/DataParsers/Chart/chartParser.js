@@ -195,8 +195,27 @@ function parseNoteData(unparsedData) { // unused for the time being
 
 // helper function for parsing tags with ticks
 function tagParse(data) {
-	console.log(data);
-	let [tick, tag, data] = data.trim().split()
+	let [tick, [tag, tagData]] = data.split(/=(.+)/).filter(chunk => chunk.length > 0).map((line, index) => {
+		if (index === 0) return parseInt(line);
+		return line.trim().split(/\s(.+)/).filter(chunk => chunk.length > 0).map(line => line.trim());
+	});
+
+	switch (tag.toLowerCase()) {
+		case "ts":
+		case "n": {
+			
+			break;
+		}
+		case "b": {
+
+			break;
+		}
+		case "e": {
+
+			break;
+		}
+		default: console.log(`${tag} found...`);
+	}
 }
 
 
