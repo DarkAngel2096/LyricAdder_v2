@@ -177,16 +177,46 @@ function parseSongData(unparsedData) {
 }
 
 function parseSyncTrackData(unparsedData) {
-	console.log(unparsedData);
+	// variable for holding the data
+	let synctrackData = [];
+
+	// variable for holding the event/data that was on the line before
+	let earlierEvent = null;
 
 	// loop through the data
 	for (let data of unparsedData) {
-		let parsed = tagParse(data);
+		// parse the current tag, and give in the event that happened before
+		let parsed = tagParse(data, earlierEvent);
+
+		// check if not a TS marker, since Anchors and BPM's only have this
+		if (parsed && parsed.constructor.name != "TimeSignature") {
+			earlierEvent = parsed;
+		} else {earlierEvent = null}
+
+		// if a TS or BPM marker, add to the data to be returned
+		if (parsed && parsed.constructor.name.match(/TimeSignature|BPM/)) {
+			synctrackData.push(parsed);
+		}
 	}
+
+	// which gets returned here
+	return synctrackData;
 }
 
 function parseEventData(unparsedData) {
+	console.log(unparsedData);
 
+	// variable for holding the data
+	let synctrackData = [];
+
+	// variable for holding the event/data that was on the line before
+	let earlierEvent = null;
+
+	// loop through the data
+	for (let data of unparsedData) {
+		// parse the current tag, and give in the event that happened before
+		let parsed = tagParse(data, earlierEvent);
+	}
 }
 
 function parseNoteData(unparsedData) { // unused for the time being
@@ -194,24 +224,57 @@ function parseNoteData(unparsedData) { // unused for the time being
 }
 
 // helper function for parsing tags with ticks
-function tagParse(data) {
-	let [tick, [tag, tagData]] = data.split(/=(.+)/).filter(chunk => chunk.length > 0).map((line, index) => {
+function tagParse(newData, oldEvent) {
+	// split out the tick, get it as a number, then split again to get the tag and it's data all in separate variables
+	let [tick, [tag, tagData]] = newData.split(/=(.+)/).filter(chunk => chunk.length > 0).map((line, index) => {
 		if (index === 0) return parseInt(line);
 		return line.trim().split(/\s(.+)/).filter(chunk => chunk.length > 0).map(line => line.trim());
 	});
 
+	// switch by the tag we got, with it being lowercase
 	switch (tag.toLowerCase()) {
-		case "ts":
-		case "n": {
-			
+		case "ts": {
+			// split out the nominator and possible denominator from the data, if no denominator, default to 4
+			let [nominator, denominator = 4] = tagData.split(" ").map(line => parseInt(line.trim()));
+
+			// create the new TS class and return it
+			return new TimeSignature(tick, nominator, denominator);
 			break;
 		}
 		case "b": {
+			// parse the BPM, and dividing with 1000 to get the actual BPM
+			let bpm = parseInt(tagData) / 1000;
 
+			// create the new BPM class and return it
+			return new BPM(tick, bpm, oldEvent);
+			break;
+		}
+		case "a": {
+			// get the microsecond time for the event
+			let time_μs = parseInt(tagData);
+
+			// if there was an old even given in and it's a BPM marker, add the value to it and return empty
+			if (oldEvent && oldEvent.constructor.name === "BPM") {
+				oldEvent.anchor = time_μs;
+				return;
+			}
+
+			// otherwise return empty
+			return time_μs;
 			break;
 		}
 		case "e": {
+			// remove the first and last double quote marks from the start and end
+			let [eventTag, eventData] = tagData.replace(/^\"|\"$/g, "").trim().split(/\s(.+)/);
 
+			console.log(`event: "${eventTag}", with data: "${eventData}"`);
+
+			break;
+		}
+		case "n": {
+			let [note, sustain] = tagData.split(" ").map(line => parseInt(line.trim()));
+
+			console.log(note, sustain);
 			break;
 		}
 		default: console.log(`${tag} found...`);
