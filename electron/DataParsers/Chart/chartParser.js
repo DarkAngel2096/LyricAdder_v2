@@ -6,16 +6,13 @@ const {SongInfo} = require ("./../Classes/SongInfo.js");
 const {Note} = require ("./../Classes/Note.js");
 const {StarPower} = require ("./../Classes/StarPower.js");
 const {BPM} = require ("./../Classes/BPM.js");
-const {Anchor} = require ("./../Classes/Anchor.js");
 const {TimeSignature} = require ("./../Classes/TimeSignature.js");
 // events
 const {BaseEvent} = require ("./../Classes/BaseEvent.js");
 const {LyricEvent} = require ("./../Classes/LyricEvent.js");
-const {PhraseStartEvent} = require ("./../Classes/PhraseStartEvent.js");
-const {PhraseEndEvent} = require ("./../Classes/PhraseEndEvent.js");
+const {PhraseEvent} = require ("./../Classes/PhraseEvent.js");
 const {SectionEvent} = require ("./../Classes/SectionEvent.js");
 const {SoloEvent} = require ("./../Classes/SoloEvent.js");
-const {SoloEndEvent} = require ("./../Classes/SoloEndEvent.js");
 
 
 // variables to keep track of stuff
@@ -75,8 +72,6 @@ function readChart(path) {
 
 	console.log("\nParsed data below");
 	//console.log(parsedData);
-
-
 
 	console.log(`\nFile reading done in: ${Date.now() - startTime}ms.`);
 }
@@ -205,21 +200,34 @@ function parseSyncTrackData(unparsedData) {
 
 function parseEventData(unparsedData) {
 	console.log(unparsedData);
-
 	// variable for holding the data
-	let synctrackData = [];
+	let eventData = [];
 
-	// variable for holding the event/data that was on the line before
+	// var to hold the phrase event data and temp lyric hold
+	let currentPhrase = null;
+
+	// var for earlier event
 	let earlierEvent = null;
 
 	// loop through the data
 	for (let data of unparsedData) {
 		// parse the current tag, and give in the event that happened before
-		let parsed = tagParse(data, earlierEvent);
+		let parsed = tagParse(data);
+
+		// shouldn't have any solo or soloend events in the Events tag, only section and lyric stuff
+		if (parsed && parsed.constructor.name === "SectionEvent") {
+			eventData.push(parsed);
+		} else {
+			console.log(parsed);
+			
+		}
 	}
+
+	// which gets returned here
+	return eventData;
 }
 
-function parseNoteData(unparsedData) { // unused for the time being
+function parseNoteData(unparsedData) { // @todo unused for the time being
 
 }
 
@@ -246,7 +254,7 @@ function tagParse(newData, oldEvent) {
 			let bpm = parseInt(tagData) / 1000;
 
 			// create the new BPM class and return it
-			return new BPM(tick, bpm, oldEvent);
+			return new BPM(tick, bpm, (oldEvent && oldEvent.tick === tick) ? oldEvent.time : null);
 			break;
 		}
 		case "a": {
@@ -254,30 +262,67 @@ function tagParse(newData, oldEvent) {
 			let time_μs = parseInt(tagData);
 
 			// if there was an old even given in and it's a BPM marker, add the value to it and return empty
-			if (oldEvent && oldEvent.constructor.name === "BPM") {
+			if (oldEvent && oldEvent.constructor.name === "BPM" && oldEvent.tick === tick) {
 				oldEvent.anchor = time_μs;
 				return;
 			}
 
 			// otherwise return empty
-			return time_μs;
+			return {tick: tick, time: time_μs};
 			break;
 		}
 		case "e": {
-			// remove the first and last double quote marks from the start and end
+			// remove the first and last double quote marks from the start and end and split out the tag and data
 			let [eventTag, eventData] = tagData.replace(/^\"|\"$/g, "").trim().split(/\s(.+)/);
 
-			console.log(`event: "${eventTag}", with data: "${eventData}"`);
+			//console.log(`event: "${eventTag}", with data: "${eventData}"`);
+
+			// switch case to figure out which event we're talking about
+			switch (eventTag.toLowerCase()) {
+				case "section": {		// only thing to this event, simple
+					return new SectionEvent(tick, eventData);
+					break;
+				}
+				case "phrase_start": {	// the phrase_start will create the event
+					return new PhraseEvent(tick);
+					break;
+				}
+				case "phrase_end": {	// will edit the phrase event stored elsewhere, return only tick
+					return {tick: tick, type: "PhraseEnd"};
+					break;
+				}
+				case "lyric": {			// will be added to the phrase event stored elsewhere, return lyric event
+					return new LyricEvent(tick, eventData);
+					break;
+				}
+				// @todo choose what to do, setting or just default to be used for lyrics, for now just create lyric events
+				case "default": {		// depending on settings either see these as lyric events, or just log errors
+					return new LyricEvent(tick, undefined);
+					break;
+				}
+				case "solo": {		// @todo unused for the time being
+
+					break;
+				}
+				case "soloend": {	// @todo unused for the time being
+
+					break;
+				}
+				default: console.log(`"${eventTag}" event found...`);
+			}
+			break;
+		}
+		case "s": {		// @todo unused for the time being
 
 			break;
 		}
-		case "n": {
-			let [note, sustain] = tagData.split(" ").map(line => parseInt(line.trim()));
+		case "n": {		// @todo unused for the time being
+			//let [note, sustain] = tagData.split(" ").map(line => parseInt(line.trim()));
 
-			console.log(note, sustain);
+			//console.log(note, sustain);
 			break;
 		}
-		default: console.log(`${tag} found...`);
+		default: console.log(`"${tag}" found...`);
 	}
 }
 

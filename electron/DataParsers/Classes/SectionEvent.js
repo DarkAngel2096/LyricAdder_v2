@@ -3,12 +3,12 @@ const {BaseEvent} = require ("./BaseEvent.js");
 class SectionEvent extends BaseEvent {
 
 	/*
-	sectionValue    (string)    = string of what the section is named
+	sectionString    (string)    = string of what the section is named
 	*/
 
-	constructor (tick, sectionValue) {
+	constructor (tick, sectionString) {
 		super (tick, "section", true);
-		this.sectionValue = sectionValue;
+		this.sectionString = sectionString;
 	}
 }
 

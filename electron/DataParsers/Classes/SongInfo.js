@@ -1,19 +1,19 @@
 class SongInfo {
 
 	/*
-	songName            (string)    = name of the song
-	artistName          (string)    = name of the artist
-	albumName           (string)    = name of the album
-	year                (int)       = year when the album was released
-	genre               (string)    = genre for the music
-	charter             (string)    = charter name
-	resolution			(int)		= resolution / ticks per beat value
-	Offset				(int)		= offset, should always be 0, otherwise generally messes up things
-	difficulty			(int)		= difficulty given
-	previewStat			(int)		= start point of the preview in ms
-	previewEnd			(int)		= end point of the preview in ms
+	songName		(string)    = name of the song
+	artistName		(string)    = name of the artist
+	albumName		(string)    = name of the album
+	year			(int)       = year when the album was released
+	genre			(string)    = genre for the music
+	charter			(string)    = charter name
+	resolution		(int)		= resolution / ticks per beat value
+	Offset			(int)		= offset, should always be 0, otherwise generally messes up things
+	difficulty		(int)		= difficulty given
+	previewStat		(int)		= start point of the preview in ms
+	previewEnd		(int)		= end point of the preview in ms
 
-	otherParts			(array)		= all of the other parts which have not been taken into consideration
+	otherParts		(array)		= all of the other parts which have not been taken into consideration
 	*/
 
 	constructor (data) {
