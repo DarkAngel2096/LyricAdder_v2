@@ -217,9 +217,15 @@ function parseEventData(unparsedData) {
 		// shouldn't have any solo or soloend events in the Events tag, only section and lyric stuff
 		if (parsed && parsed.constructor.name === "SectionEvent") {
 			eventData.push(parsed);
+		} else if (parsed && (parsed.constructor.name.match(/LyricEvent|PhraseEvent/) || parsed.type === "PhraseEnd")) {
+
+			if (parsed.tick > (earlierEvent ? earlierEvent.tick : 0)) {
+				
+			}
+
+
 		} else {
 			console.log(parsed);
-			
 		}
 	}
 
@@ -230,6 +236,7 @@ function parseEventData(unparsedData) {
 function parseNoteData(unparsedData) { // @todo unused for the time being
 
 }
+
 
 // helper function for parsing tags with ticks
 function tagParse(newData, oldEvent) {
