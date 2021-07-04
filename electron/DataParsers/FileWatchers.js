@@ -15,7 +15,7 @@ const chartPathLong = "./testdata/notes_long.chart";
 const chartPathNormal = "./testdata/notes_normal.chart";
 const chartPathSpecial = "./testdata/notes_special.chart";
 const testPath = "G:\\Random files\\notes.chart";
-setupWatchers({chart: testPath});
+setupWatchers({chart: chartPathNormal});
 
 
 
@@ -69,6 +69,10 @@ function chartWatcherFunc({path}) {
 		}, 50);
 	});
 
+	killWatcher();
+}
+
+function killWatcher() {
 	// just kill the watcher after a second for testing purposes
 	setTimeout(() => {
 		console.log("killing watcher");

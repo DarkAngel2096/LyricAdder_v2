@@ -342,6 +342,7 @@
   59376 = E "lyric me"
   59640 = E "phrase_end"
   59688 = E "phrase_start"
+  59700 = E "phrase_start"
   59712 = E "lyric Al-"
   59808 = E "lyric ways"
   60096 = E "lyric keep"

@@ -38,10 +38,6 @@ function readChart(path) {
 	try {
 		// read the file itself with spliting at linebreaks and trimming the whitespace out as well as removing empty lines
 		fullChartData = fs.readFileSync(path, "utf8").split("\r\n").map(line => line.trim()).filter(line => line.length > 0);
-
-		//console.log(fullChartData.length);
-		//console.log(fs.readFileSync(path, "utf8").length);
-		//console.log(fs.readFileSync(path, "utf8").split("\r\n").slice(0, 20));
 	} catch (err) { // for now just catch the problems and log them, without continuing
 		console.log("returning because problems happened:", err);
 		return;
@@ -78,7 +74,7 @@ function readChart(path) {
 
 
 		console.log("\nParsed data below");
-		//console.log(util.inspect(parsedData, false, null, true));
+		console.log(util.inspect(parsedData, false, null, true));
 	}
 
 	console.log(`\nFile reading done in: ${Date.now() - startTime}ms.`);
@@ -247,6 +243,7 @@ function parseEventData(unparsedData) {
 						// push the phrase to the event data
 						eventData.push(currentPhrase);
 					}
+					
 
 					// if the way we got into this was a new PhraseEvent then add that to the currentPhrase
 					if (parsed.constructor.name === "PhraseEvent") currentPhrase = parsed;
@@ -255,6 +252,10 @@ function parseEventData(unparsedData) {
 				} else if (earlierEvent && earlierEvent.constructor.name === "LyricEvent") {
 					currentPhrase.lyrics.push(earlierEvent);
 				}
+			} else if (parsed.tick === (earlierEvent ? earlierEvent.tick : 0)) {
+				//console.log(parsed, earlierEvent);
+			} else {
+				console.log(`tick not equal or later... parsed: "${parsed.tick}", earlier: "${earlierEvent ? earlierEvent.tick : "none"}"`);
 			}
 
 			// always add the currently parsed to the earlierEvent at the end
