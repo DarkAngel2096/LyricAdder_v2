@@ -11,12 +11,11 @@ let iniWatcher = null;
 
 
 // temp paths
-const chartPath = "E:\\Games\\Clone Hero\\Songs\\Marathon Hero 2\\Marathon Hero 2\\32 - Let Me Tell You a Story\\Ayreon - The Forever Saga\\notes.chart";
-const chartPath2 = "E:\\Games\\Clone Hero\\Custom songs\\Charts In Progress\\test charts\\notes.chart";
-const chartPath3 = "E:\\Games\\Clone Hero\\Custom songs\\Finished songs\\Arch Enemy - Reason To Believe\\notes.chart";
-const chartPath4 = "C:\\Users\\tonin\\Downloads\\notes (2).chart";
-const laptopPath = "C:\\Users\\Administrator\\Downloads\\Arch Enemy - The Eagle Flies Alone\\notes.chart";
-setupWatchers({chart: chartPath3});
+const chartPathLong = "./testdata/notes_long.chart";
+const chartPathNormal = "./testdata/notes_normal.chart";
+const chartPathSpecial = "./testdata/notes_special.chart";
+const testPath = "G:\\Random files\\notes.chart";
+setupWatchers({chart: testPath});
 
 
 
@@ -42,9 +41,6 @@ function chartWatcherFunc({path}) {
 		chartWatcher.close();
 	}
 
-	// variable for a debounce
-	let fsWait = false;
-
 	// first read variable and forcing
 	let firstRead = true;
 	if (firstRead) {
@@ -53,6 +49,9 @@ function chartWatcherFunc({path}) {
 		firstRead = false;
 	}
 
+	// variable for a debounce
+	let fsWait = false;
+
 	// watcher creation
 	console.log("\nStarting new watcher");
 	chartWatcher = fs.watch(path, {encoding: "utf8"}, (eventWatch, filename) => {
@@ -60,11 +59,14 @@ function chartWatcherFunc({path}) {
 		if (fsWait) return;
 		fsWait = setTimeout(() => {fsWait = false}, 250);
 
-		switch (eventWatch) {
-			case "change": console.log("file changed"); readChart(path); break;
-			case "rename": break; // @todo add in some form of backup for renames..?
-			default: console.log(eventWatch); break;
-		}
+
+		setTimeout(() => {
+			switch (eventWatch) {
+				case "change": console.log("file changed"); readChart(path); break;
+				case "rename": break; // @todo add in some form of backup for renames..?
+				default: console.log(eventWatch); break;
+			}
+		}, 50);
 	});
 
 	// just kill the watcher after a second for testing purposes

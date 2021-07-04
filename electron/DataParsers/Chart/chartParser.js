@@ -1,5 +1,6 @@
 // module requires
 const fs = require("fs");
+const util = require("util");
 
 // class requires
 const {SongInfo} = require ("./../Classes/SongInfo.js");
@@ -37,6 +38,10 @@ function readChart(path) {
 	try {
 		// read the file itself with spliting at linebreaks and trimming the whitespace out as well as removing empty lines
 		fullChartData = fs.readFileSync(path, "utf8").split("\r\n").map(line => line.trim()).filter(line => line.length > 0);
+
+		//console.log(fullChartData.length);
+		//console.log(fs.readFileSync(path, "utf8").length);
+		//console.log(fs.readFileSync(path, "utf8").split("\r\n").slice(0, 20));
 	} catch (err) { // for now just catch the problems and log them, without continuing
 		console.log("returning because problems happened:", err);
 		return;
@@ -45,33 +50,36 @@ function readChart(path) {
 	// function for splitting the read data
 	splitAndFindChanges(fullChartData);
 
-	console.log(`\nAfter:`);
-	console.log(changedData);
-	//console.log(splitData);
+	if (fullChartData.length !== 0) {
+
+		console.log(`\nAfter:`);
+		console.log(changedData);
+		//console.log(splitData);
 
 
-	console.log("\nStarting to parse data...");
-	// next up parsing each tag if it's been changed
-	if (changedData.song) {
-		console.log(`"Song"`);
-		parsedData.song = parseSongData(splitData.song);
-	}
-	if (changedData.synctrack) {
-		console.log(`"SyncTrack"`);
-		parsedData.synctrack = parseSyncTrackData(splitData.synctrack);
-	}
-	if (changedData.events) {
-		console.log(`"Events"`);
-		parsedData.events = parseEventData(splitData.events);
-	}
-	if (changedData.notes) { // not being parsed for the time being, since not used
-		console.log(`"Notes (not parsed)..."`);
-		//parsedData.notes = parseNoteData();
-	}
+		console.log("\nStarting to parse data...");
+		// next up parsing each tag if it's been changed
+		if (changedData.song) {
+			console.log(`"Song"`);
+			parsedData.song = parseSongData(splitData.song);
+		}
+		if (changedData.synctrack) {
+			console.log(`"SyncTrack"`);
+			parsedData.synctrack = parseSyncTrackData(splitData.synctrack);
+		}
+		if (changedData.events) {
+			console.log(`"Events"`);
+			parsedData.events = parseEventData(splitData.events);
+		}
+		if (changedData.notes) { // not being parsed for the time being, since not used
+			console.log(`"Notes (not parsed)..."`);
+			//parsedData.notes = parseNoteData();
+		}
 
 
-	console.log("\nParsed data below");
-	//console.log(parsedData);
+		console.log("\nParsed data below");
+		//console.log(util.inspect(parsedData, false, null, true));
+	}
 
 	console.log(`\nFile reading done in: ${Date.now() - startTime}ms.`);
 }
@@ -130,15 +138,22 @@ function splitAndFindChanges(data) {
 
 // helper function for splitAndFindChanges
 function arrayNotEquals(data, split) {
-	// if the old data is not an array or empty array, return true
+	// if the old data is not an array or empty array, or if the lengths of the two arrays aren't the same
 	if (!Array.isArray(data) || data.length === 0) {
+		//console.log("return not array or data 0");
 		return true;
+	}
+
+	if ((data && data.length) !== (split && split.length)) {
+		//console.log("return with different length", data.length, split.length);
+		return true
 	}
 
 	// look through the main data array with getting the indexes too
 	for (const [index, elem] of data.entries()) {
 		// check if the element does not equal the same in the split array, return true
 		if (elem !== split[index]) {
+			//console.log("return with difference");
 			return true;
 		}
 	}
@@ -199,7 +214,6 @@ function parseSyncTrackData(unparsedData) {
 }
 
 function parseEventData(unparsedData) {
-	console.log(unparsedData);
 	// variable for holding the data
 	let eventData = [];
 
@@ -219,11 +233,32 @@ function parseEventData(unparsedData) {
 			eventData.push(parsed);
 		} else if (parsed && (parsed.constructor.name.match(/LyricEvent|PhraseEvent/) || parsed.type === "PhraseEnd")) {
 
+			// if the new event is later in the track than the earlier one, everything is fine
 			if (parsed.tick > (earlierEvent ? earlierEvent.tick : 0)) {
-				
+				// if the current event is a phrase start then add the earlierEvent still to it
+				// push the current phrase and add the new phrase to the currentPhrase var
+				if (parsed.constructor.name === "PhraseEvent" || parsed.type === "PhraseEnd") {
+					// check if earlierEvent is not null or undefined and if it's a lyricEvent
+					if (earlierEvent && earlierEvent.constructor.name === "LyricEvent") {
+						// push the earlier LyricEvent to the current phrases lyrics array
+						currentPhrase.lyrics.push(earlierEvent);
+						// check if the currently parsed tag was a PhraseEnd, if so add it's tick, otherwise set null
+						parsed.type === "PhraseEnd" ? currentPhrase.endTick = parsed.tick : currentPhrase.endTick = null;
+						// push the phrase to the event data
+						eventData.push(currentPhrase);
+					}
+
+					// if the way we got into this was a new PhraseEvent then add that to the currentPhrase
+					if (parsed.constructor.name === "PhraseEvent") currentPhrase = parsed;
+
+				// if the current parsed wasn't a PhraseEvent or PhraseEnd, and the ealier event was LyricEvent, push it to current lyrics
+				} else if (earlierEvent && earlierEvent.constructor.name === "LyricEvent") {
+					currentPhrase.lyrics.push(earlierEvent);
+				}
 			}
 
-
+			// always add the currently parsed to the earlierEvent at the end
+			earlierEvent = parsed;
 		} else {
 			console.log(parsed);
 		}
