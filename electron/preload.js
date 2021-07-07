@@ -3,7 +3,8 @@ const { contextBridge, ipcRenderer } = require("electron");
 // allowed channels
 const validChannels = [
 	"fileListeners",
-	"setConfigTheme"
+	"setConfigTheme",
+	"chartData"
 ];
 
 const validSyncChannels = [

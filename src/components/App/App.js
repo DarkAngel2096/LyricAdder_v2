@@ -44,6 +44,13 @@ export default function App() {
 		setCustomThemes(data.customThemes);
 	}, []);
 
+	// test for listening of data
+	useEffect(() => {
+		window.api.listenToMain("chartData", (evnt, message) => {
+			console.log(message);
+		});
+	}, [])
+
 	// effect which triggers on theme chage
 	useEffect(() => {
 		// check if defaultThemes isn't empty, nor currentTheme

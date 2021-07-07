@@ -74,8 +74,9 @@ function readChart(path) {
 
 
 		console.log("\nParsed data below");
-		console.log(util.inspect(parsedData, false, null, true));
+		//console.log(util.inspect(parsedData, false, null, true));
 	}
+	return parsedData;
 
 	console.log(`\nFile reading done in: ${Date.now() - startTime}ms.`);
 }
@@ -219,6 +220,9 @@ function parseEventData(unparsedData) {
 	// var for earlier event
 	let earlierEvent = null;
 
+	// var for holding stray lyric events
+	let strayLyrics = [];
+
 	// loop through the data
 	for (let data of unparsedData) {
 		// parse the current tag, and give in the event that happened before
@@ -228,32 +232,41 @@ function parseEventData(unparsedData) {
 		if (parsed && parsed.constructor.name === "SectionEvent") {
 			eventData.push(parsed);
 		} else if (parsed && (parsed.constructor.name.match(/LyricEvent|PhraseEvent/) || parsed.type === "PhraseEnd")) {
-
 			// if the new event is later in the track than the earlier one, everything is fine
 			if (parsed.tick > (earlierEvent ? earlierEvent.tick : 0)) {
-				// if the current event is a phrase start then add the earlierEvent still to it
-				// push the current phrase and add the new phrase to the currentPhrase var
-				if (parsed.constructor.name === "PhraseEvent" || parsed.type === "PhraseEnd") {
-					// check if earlierEvent is not null or undefined and if it's a lyricEvent
-					if (earlierEvent && earlierEvent.constructor.name === "LyricEvent") {
-						// push the earlier LyricEvent to the current phrases lyrics array
-						currentPhrase.lyrics.push(earlierEvent);
-						// check if the currently parsed tag was a PhraseEnd, if so add it's tick, otherwise set null
-						parsed.type === "PhraseEnd" ? currentPhrase.endTick = parsed.tick : currentPhrase.endTick = null;
-						// push the phrase to the event data
-						eventData.push(currentPhrase);
-					}
-					
-
-					// if the way we got into this was a new PhraseEvent then add that to the currentPhrase
-					if (parsed.constructor.name === "PhraseEvent") currentPhrase = parsed;
-
-				// if the current parsed wasn't a PhraseEvent or PhraseEnd, and the ealier event was LyricEvent, push it to current lyrics
-				} else if (earlierEvent && earlierEvent.constructor.name === "LyricEvent") {
-					currentPhrase.lyrics.push(earlierEvent);
+				// check if earlierEvent is not null or undefined and if it's a lyricEvent
+				if (earlierEvent && earlierEvent.constructor.name === "LyricEvent") {
+					// if the currentPhrase has an end tick, it's a stray lyric event otherwise add to current
+					currentPhrase.endTick ? strayLyrics.push(earlierEvent) : currentPhrase.lyrics.push(earlierEvent)
 				}
+
+				// if we found a PhraseEnd, add it's tick to the endTick
+				if (earlierEvent && earlierEvent.type === "PhraseEnd") {
+					// if there is an end tick already, add in an entry to the multipleEnds array
+					if (currentPhrase && currentPhrase.endTick) {
+						currentPhrase.multipleEnds.push(earlierEvent.tick);
+					} else {
+						currentPhrase.endTick = earlierEvent.tick;
+					}
+				}
+
+				// if we found a PhraseEvent, push the last phrase to the eventData and create a new phrase
+				if (parsed.constructor.name === "PhraseEvent") {
+					eventData.push(currentPhrase);
+					currentPhrase = parsed;
+				}
+
 			} else if (parsed.tick === (earlierEvent ? earlierEvent.tick : 0)) {
-				//console.log(parsed, earlierEvent);
+				// if lyric event and phrase event on same tick, with lyric on earlier and phrase on current
+				if (parsed.constructor.name === "PhraseEvent" && earlierEvent.constructor.name === "LyricEvent") {
+					eventData.push(currentPhrase);
+					currentPhrase = parsed;
+					// change the lyric back to parsed
+					parsed = earlierEvent;
+				} else {
+					console.log("what?", parsed, earlierEvent);
+				}
+
 			} else {
 				console.log(`tick not equal or later... parsed: "${parsed.tick}", earlier: "${earlierEvent ? earlierEvent.tick : "none"}"`);
 			}
@@ -264,6 +277,20 @@ function parseEventData(unparsedData) {
 			console.log(parsed);
 		}
 	}
+
+	// at the end add in the phrase end tick
+	if (earlierEvent && earlierEvent.type === "PhraseEnd") {
+		// if there is an end tick already, add in an entry to the multipleEnds array
+		if (currentPhrase && currentPhrase.endTick) {
+			currentPhrase.multipleEnds.push(earlierEvent.tick);
+		} else {
+			currentPhrase.endTick = earlierEvent.tick;
+		}
+	}
+	// and then add the current phrase (should be last one) to the eventData
+	eventData.push(currentPhrase);
+	// and at the end add in the stray events
+	eventData.push({type: "StrayLyrics", events: strayLyrics});
 
 	// which gets returned here
 	return eventData;

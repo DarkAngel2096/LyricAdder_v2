@@ -11,16 +11,19 @@ let iniWatcher = null;
 
 
 // temp paths
-const chartPathLong = "./testdata/notes_long.chart";
+/*const chartPathLong = "./testdata/notes_long.chart";
 const chartPathNormal = "./testdata/notes_normal.chart";
 const chartPathSpecial = "./testdata/notes_special.chart";
 const testPath = "G:\\Random files\\notes.chart";
-setupWatchers({chart: chartPathNormal});
+setupWatchers({chart: chartPathSpecial});*/
 
 
 
 // function for chart watcher
 function chartWatcherFunc({path}) {
+	// var for holding the data
+	let chartData;
+
 	console.log("Chart watcher called");
 
 	// check if NOT file
@@ -45,7 +48,7 @@ function chartWatcherFunc({path}) {
 	let firstRead = true;
 	if (firstRead) {
 		console.log("First read.");
-		readChart(path);
+		chartData = readChart(path);
 		firstRead = false;
 	}
 
@@ -62,14 +65,14 @@ function chartWatcherFunc({path}) {
 
 		setTimeout(() => {
 			switch (eventWatch) {
-				case "change": console.log("file changed"); readChart(path); break;
+				case "change": console.log("file changed"); chartData = readChart(path); break;
 				case "rename": break; // @todo add in some form of backup for renames..?
 				default: console.log(eventWatch); break;
 			}
 		}, 50);
 	});
-
-	killWatcher();
+	
+	//killWatcher();
 }
 
 function killWatcher() {
