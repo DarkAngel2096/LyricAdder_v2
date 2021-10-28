@@ -9,18 +9,18 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/react-fontawesome": "^0.1.14",
     "draft-js": "^0.11.7",
-    "node-sass": "^5.0.0",
+    "node-sass": "^6.0.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "^4.0.2"
   },
   "devDependencies": {
-    "css-loader": "^5.2.6",
-    "electron": "^13.1.2",
+    "css-loader": "^6.5.0",
+    "electron": "^15.3.0",
     "electron-builder": "^22.9.1",
-    "sass-loader": "^10.1.1",
-    "style-loader": "^2.0.0"
+    "sass-loader": "^12.3.0",
+    "style-loader": "^3.3.1"
   },
   "build": {
     "appId": "com.example.LyricAdder",
