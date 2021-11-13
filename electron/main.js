@@ -38,7 +38,9 @@ const createWindow = () => {
 		webPreferences: {
 			nodeIntegration: false,
 			contextIsolation: true,
-			preload: path.join(__dirname, "preload.js")}
+			preload: path.join(__dirname, "preload.js")
+		},
+		nativeWindowOpen: true
 	});
 
 	// function call to check if window creation would be outside the displays currently
@@ -87,6 +89,9 @@ const createWindow = () => {
 		sizePosWrite();
 	});
 };
+
+// disable hardware acceleration before app being ready
+app.disableHardwareAcceleration();
 
 // when app ready, create window
 app.on("ready", createWindow);

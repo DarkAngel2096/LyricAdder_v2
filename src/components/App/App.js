@@ -1,19 +1,19 @@
 // React imports
-import React, {Suspense, useState, useEffect} from "react";
-import {Route, Switch, useLocation} from "react-router-dom";
+import React, { Suspense, useState, useEffect } from "react";
+import { Route, Routes, useLocation } from "react-router-dom";
 
 // component imports
-import {routes} from "./routes";
-import NotFound from "../Pages/NotFound/index";
-import {ThemeContext, PathFileContext} from "../OtherJS/contexts";
+import { routes } from "./routes";
+//import NotFound from "../Pages/NotFound/index";
+import { ThemeContext, PathFileContext } from "../OtherJS/contexts";
 import Sidebar from "../Organisms/Sidebar/index";
 
 // scss import
 import "./App.scss";
 
 // other module imports
-import {library} from "@fortawesome/fontawesome-svg-core";
-import {fas} from "@fortawesome/free-solid-svg-icons";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 // other file imports
 import * as themeJSON from "./DefaultThemes.json";
@@ -49,7 +49,7 @@ export default function App() {
 		window.api.listenToMain("chartData", (evnt, message) => {
 			console.log(message);
 		});
-	}, [])
+	}, []);
 
 	// effect which triggers on theme chage
 	useEffect(() => {
@@ -91,14 +91,13 @@ export default function App() {
 			<div className="App--MainPage">
 				<Suspense fallback={<h1>Loading...</h1>}>
 					<ThemeContext.Provider value={{currentTheme, setCurrentTheme, customThemes, defaultThemes}}>
-						<Switch>
+						<Routes>
 							{routes.map((route, index) => {
 								if (route.component) {
-									return <Route exact path={route.path} component={route.component} key={`route-${index}`}/>
+									return <Route path={route.path} element={<route.component />} key={`route-${index}`}/>
 								} else return null;
 							})}
-							<Route component={NotFound}/>
-						</Switch>
+						</Routes>
 					</ThemeContext.Provider>
 				</Suspense>
 			</div>

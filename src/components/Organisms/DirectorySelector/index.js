@@ -1,15 +1,15 @@
 // react imports
-import React, {useState, useEffect, useRef, useContext} from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 
 // component improts
 import FileSelector from "../../Components/FileSelector/index";
-import {PathFileContext} from "../../OtherJS/contexts";
+import { PathFileContext } from "../../OtherJS/contexts";
 
 // scss import
 import "./index.scss"
 
 // other module imports
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 // other file imports
 
@@ -84,9 +84,7 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 						</div>
 					)}
 					<label>
-						{
-							collapsed
-							? (
+						{collapsed ? (
 								Object.keys(dirFiles).length
 								? <FontAwesomeIcon icon="folder-open" size="2x"/>
 								: <FontAwesomeIcon icon="folder" size="2x"/>)

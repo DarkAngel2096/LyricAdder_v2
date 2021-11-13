@@ -1,6 +1,6 @@
 // React imports
-import React, {useState} from "react";
-import {useHistory} from "react-router-dom";
+import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 // component improts
 import DirectorySelector from "../DirectorySelector/index";
@@ -16,7 +16,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 // export the default function
 export default function Sidebar({routes, currentPath, ...props}) {
-	const history = useHistory();
+	const navigate = useNavigate();
 
 	const [collapsed, setCollapsed] = useState(false);
 	const [forced, setForced] = useState(false);
@@ -29,7 +29,7 @@ export default function Sidebar({routes, currentPath, ...props}) {
 
 	return (
 		<div className={`Sidebar ${collapsed ? "Sidebar--Collapsed" : ""}`}>
-			<div className={`Sidebar--Header`} onClick={() => history.push("/")}>
+			<div className={`Sidebar--Header`} onClick={() => navigate("/")}>
 				<FontAwesomeIcon icon="home" className={!collapsed ? "collapsed" : ""}/>
 				<h2 className={collapsed ? "collapsed" : ""}>LyricAdder v2</h2>
 			</div>
