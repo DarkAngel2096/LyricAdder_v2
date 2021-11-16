@@ -72,9 +72,7 @@ function readChart(path) {
 			//parsedData.notes = parseNoteData();
 		}
 
-
 		console.log("\nParsed data below");
-		//console.log(util.inspect(parsedData, false, null, true));
 	}
 	return parsedData;
 
@@ -287,10 +285,10 @@ function parseEventData(unparsedData) {
 			currentPhrase.endTick = earlierEvent.tick;
 		}
 	}
-	// and then add the current phrase (should be last one) to the eventData
-	eventData.push(currentPhrase);
-	// and at the end add in the stray events
-	eventData.push({type: "StrayLyrics", events: strayLyrics});
+	// and then add the current phrase (if not empty) to the eventData
+	currentPhrase ? eventData.push(currentPhrase) : ""
+	// and at the end add in the stray events if there are some
+	strayLyrics.length ? eventData.push({type: "StrayLyrics", events: strayLyrics}) : ""
 
 	// which gets returned here
 	return eventData;

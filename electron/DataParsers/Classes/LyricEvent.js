@@ -8,7 +8,8 @@ class LyricEvent extends BaseEvent {
 
 	constructor (tick, lyricString) {
 		super (tick, "lyric", true);
-		this.lyricString = lyricString;
+		this.originalLyrics = lyricString;
+		this.editedLyrics = lyricString;
 	}
 }
 
