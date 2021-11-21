@@ -3,7 +3,7 @@ import React, {useContext} from "react";
 
 // component improts
 import Page from "../../Organisms/Page/index";
-import {ThemeContext} from "../../OtherJS/contexts";
+import { ThemeContext } from "../../OtherJS/contexts";
 
 // scss import
 import "./index.scss"

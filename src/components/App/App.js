@@ -5,7 +5,7 @@ import { Route, Routes, useLocation } from "react-router-dom";
 // component imports
 import { routes } from "./routes";
 //import NotFound from "../Pages/NotFound/index";
-import { ThemeContext, PathFileContext } from "../OtherJS/contexts";
+import { ThemeContext, PathFileContext, FileDataContext } from "../OtherJS/contexts";
 import Sidebar from "../Organisms/Sidebar/index";
 
 // scss import
@@ -32,6 +32,10 @@ export default function App() {
 	const [customThemes, setCustomThemes] = useState({});
 	const [defaultThemes] = useState(themeJSON.default);
 
+	// states for file data
+	// @todo add in other and not just chart
+	const [chartData, setChartData] = useState({});
+
 	// effect for changing files needed on location change
 	useEffect(() => {
 		setRouteFiles(routes[routes.findIndex(el => el.path === location.pathname)].files || {});
@@ -47,7 +51,9 @@ export default function App() {
 	// test for listening of data
 	useEffect(() => {
 		window.api.listenToMain("chartData", (evnt, message) => {
-			console.log(message);
+			if (typeof message === "object" && message !== null) {
+				setChartData(message);
+			}
 		});
 	}, []);
 
@@ -91,13 +97,15 @@ export default function App() {
 			<div className="App--MainPage">
 				<Suspense fallback={<h1>Loading...</h1>}>
 					<ThemeContext.Provider value={{currentTheme, setCurrentTheme, customThemes, defaultThemes}}>
-						<Routes>
-							{routes.map((route, index) => {
-								if (route.component) {
-									return <Route path={route.path} element={<route.component />} key={`route-${index}`}/>
-								} else return null;
-							})}
-						</Routes>
+						<FileDataContext.Provider value={{chartData}}>
+							<Routes>
+								{routes.map((route, index) => {
+									if (route.component) {
+										return <Route path={route.path} element={<route.component />} key={`route-${index}`}/>
+									} else return null;
+								})}
+							</Routes>
+						</FileDataContext.Provider>
 					</ThemeContext.Provider>
 				</Suspense>
 			</div>

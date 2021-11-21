@@ -31,7 +31,6 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 			setWorkPath(workInputRef.current.files[0].webkitRelativePath.split("/")[0]);
 			let fileReturn = splitFiles(workInputRef.current.files);
 
-			console.log(fileReturn.files);
 			setDirFiles(fileReturn.files);
 			setSubFolders(fileReturn.subFolders);
 		}

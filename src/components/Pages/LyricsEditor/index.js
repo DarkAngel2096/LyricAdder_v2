@@ -1,9 +1,10 @@
 // react imports
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useContext, useEffect } from "react";
 
 // component improts
 import Page from "../../Organisms/Page/index";
-import { Editor, EditorState, RichUtils, KeyBindingUtil, getDefaultKeyBinding, convertToRaw } from "draft-js";
+import { FileDataContext } from "../../OtherJS/contexts";
+import { Editor, EditorState, ContentState, RichUtils, KeyBindingUtil, getDefaultKeyBinding, convertToRaw, } from "draft-js";
 
 // scss import
 import "./index.scss";
@@ -15,6 +16,8 @@ import "draft-js/dist/Draft.css";
 
 // export the default function
 export default function LyricsEditor() {
+	const fileDataContext = useContext(FileDataContext);
+
 	const draftRef = useRef(null);
 	const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
@@ -48,6 +51,9 @@ export default function LyricsEditor() {
 	const customStyleMap = {
 		"SINGLE_EVENT": {
 			backgroundColor: "rgba(100, 100, 255, 1)"
+		},
+		"EMPTY_EVENT": {
+			backgroundColor: "rgba(255, 0, 0, 1)"
 		}
 	}
 
@@ -89,6 +95,15 @@ export default function LyricsEditor() {
 	const postData = () => {
 		console.log("current state: ", convertToRaw(editorState.getCurrentContent()));
 	}
+
+	useEffect(() => {
+		console.log(fileDataContext.chartData);
+		if (fileDataContext.chartData && fileDataContext.chartData.chart && fileDataContext.chartData.chart.events) {
+
+			setEditorState(EditorState.createWithContent(ContentState.createFromText("hello world")));
+			console.log(editorState.getCurrentContent().getBlocksAsArray());
+		}
+	}, [fileDataContext])
 
 	return (
 		<Page name="Lyrics Editor">
