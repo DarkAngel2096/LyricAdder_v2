@@ -39,8 +39,7 @@ const createWindow = () => {
 			nodeIntegration: false,
 			contextIsolation: true,
 			preload: path.join(__dirname, "preload.js")
-		},
-		nativeWindowOpen: true
+		}
 	});
 
 	// function call to check if window creation would be outside the displays currently

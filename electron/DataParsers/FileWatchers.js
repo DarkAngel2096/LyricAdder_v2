@@ -18,10 +18,14 @@ setupWatchers({chart: chartPathSpecial});*/
 
 // function for chart watcher
 function chartWatcherFunc({path}) {
-	// var for holding the data
-	let chartData;
-
 	console.log("Chart watcher called");
+
+	// at the start check if the path is just an empty string, and if there is an active watcher, if so, kill it
+	if (path === "" && chartWatcher) {
+		console.log("Path was empty, watcher found, killing...");
+		chartWatcher.close();
+		return;
+	}
 
 	// check if NOT file
 	if (!fs.statSync(path).isFile()) {
@@ -43,6 +47,9 @@ function chartWatcherFunc({path}) {
 
 	// get the main page web content
 	const mainWindowContent = webContents.getAllWebContents().find(elem => elem.getTitle().toLowerCase().startsWith("lyric adding"));
+
+	// var for holding the data
+	let chartData;
 
 	// first read variable and forcing
 	let firstRead = true;
@@ -77,17 +84,8 @@ function chartWatcherFunc({path}) {
 			}
 		}, 50);
 	});
-
-	//killWatcher();
 }
 
-function killWatcher() {
-	// just kill the watcher after a second for testing purposes
-	setTimeout(() => {
-		console.log("killing watcher");
-		chartWatcher.close();
-	}, 1000);
-}
 
 
 // function to handle all FileWatchers stuff

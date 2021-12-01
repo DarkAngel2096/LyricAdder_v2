@@ -250,7 +250,9 @@ function parseEventData(unparsedData) {
 
 				// if we found a PhraseEvent, push the last phrase to the eventData and create a new phrase
 				if (parsed.constructor.name === "PhraseEvent") {
-					eventData.push(currentPhrase);
+					if (currentPhrase !== null) {
+						eventData.push(currentPhrase);
+					}
 					currentPhrase = parsed;
 				}
 

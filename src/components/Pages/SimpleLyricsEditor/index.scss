@@ -1,0 +1,59 @@
+.SimpleLyrics {
+	margin-left: 10px;
+	text-align: left;
+
+	&--Header {
+		display: flex;
+		flex-direction: row;
+		margin: 10px 0px;
+
+		&--Buttons {
+			width: 20%;
+			flex-direction: column;
+			text-align: center;
+
+			button {
+				width: 100%;
+			}
+
+			.active {
+				background-color: rgba(175, 175, 175, 1);
+			}
+		}
+		&--Data {
+			h3, p {
+				margin: inherit;
+				text-align: center;
+			}
+
+			&--Depth {
+				display: flex;
+				flex-direction: row;
+				margin-left: 10px;
+
+				p {
+					margin: inherit;
+				}
+			}
+		}
+		&--Errors {
+			color: rgba(255, 50, 50, 1);
+
+			h3 {
+				margin: inherit;
+			}
+		}
+	}
+
+	&--Editor {
+		font-size: 16px;
+		margin-right: 15px;
+
+		textarea {
+			width: 100%;
+			min-height: 15em;
+			font-size: inherit;
+			resize: none;
+		}
+	}
+}

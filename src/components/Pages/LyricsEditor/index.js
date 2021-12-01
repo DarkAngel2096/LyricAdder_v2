@@ -21,6 +21,9 @@ export default function LyricsEditor() {
 	const draftRef = useRef(null);
 	const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
 
+	// variable for holding info about line counts and events for them
+	const [lineEventState, setLineEventState] = useState([]);
+
 	// function to handling keybinds
 	const handleKeyCommand = (data) => {
 		//console.log(data);
@@ -97,37 +100,68 @@ export default function LyricsEditor() {
 	}
 
 	useEffect(() => {
-		console.log(fileDataContext.chartData);
+		//console.log(fileDataContext.chartData);
 		if (fileDataContext.chartData && fileDataContext.chartData.chart && fileDataContext.chartData.chart.events) {
-
-			setEditorState(EditorState.createWithContent(ContentState.createFromText("hello world")));
-			console.log(editorState.getCurrentContent().getBlocksAsArray());
+			setEditorState(EditorState.createWithContent(ContentState.createFromText("hello world\nsecond line")));
+			//console.log(editorState.getCurrentContent().getBlocksAsArray());
 		}
 	}, [fileDataContext])
+
+	// effect for updating line numbers/events count
+	useEffect(() => {
+		if (fileDataContext.chartData && fileDataContext.chartData.chart && fileDataContext.chartData.chart.events) {
+			let outputArr = [];
+
+			for (let [index, phrase] of fileDataContext.chartData.chart.events.filter(elem => elem.type === "phrase").entries()) {
+				outputArr.push({
+					line: index + 1,
+					events: phrase.lyrics.length
+				});
+			}
+			setLineEventState(outputArr);
+		}
+	}, [fileDataContext]);
 
 	return (
 		<Page name="Lyrics Editor">
 			<div className="Lyrics">
-				<h1>oh hai :)</h1>
+				<div className="Lyrics--LyricData">
+					{(fileDataContext.chartData && fileDataContext.chartData.chart && fileDataContext.chartData.chart.events) && (
+						<p>
+							Sections count: {fileDataContext.chartData.chart.events.filter(elem => elem.type === "section").length}<br/>
+							Phrase count: {fileDataContext.chartData.chart.events.filter(elem => elem.type === "phrase").length}<br/>
+							Total lyric events: {fileDataContext.chartData.chart.events.filter(elem => elem.type === "phrase").reduce((previousValue, currentValue) => previousValue += currentValue.lyrics.length, 0)}
+						</p>
+					)}
+				</div>
 				<div className="Lyrics--EditorArea">
 					{buttonData.map((elem) => {
 						return createStyleButton(elem.name, elem.style);
 					})}
 					<button onClick={postData}>data</button>
 
-					<div className="Lyrics--EditorArea--Editor" onClick={handleAreaClick}>
-						<Editor
-							ref={draftRef}
-							editorState={editorState}
-							onChange={setEditorState}
-							keyBindingFn={customKeyBinds}
-							handleKeyCommand={handleKeyCommand}
-							customStyleMap={customStyleMap}
-							placeholder={
-								`Type your lyrics in here\n` +
-								`Each phrase on their own line\n` +
-								`With syl-lab-les sep-a-rat-ed by hy-phens`}
-							/>
+					<div>
+						<div className="Lyrics--EditorArea--LineNumbering">
+							{(lineEventState.length > 0) &&
+								lineEventState.map(elem => {
+									return (
+										<p>{elem.line ? elem.line : "x"} | {elem.events ? elem.events : 0} - {elem.syllables ? elem.syllables : 0}</p>)
+								})}
+						</div>
+						<div className="Lyrics--EditorArea--Editor" onClick={handleAreaClick}>
+							<Editor
+								ref={draftRef}
+								editorState={editorState}
+								onChange={setEditorState}
+								keyBindingFn={customKeyBinds}
+								handleKeyCommand={handleKeyCommand}
+								customStyleMap={customStyleMap}
+								placeholder={
+									`Type your lyrics in here\n` +
+									`Each phrase on their own line\n` +
+									`With syl-lab-les sep-a-rat-ed by hy-phens`}
+								/>
+						</div>
 					</div>
 				</div>
 			</div>

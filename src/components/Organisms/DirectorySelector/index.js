@@ -62,13 +62,11 @@ export default function DirectorySelector({collapsed = false, forceSidebarOpen, 
 	useEffect(() => {
 		let tempData = {};
 
-		if (Object.keys(dirFiles).length) {
-			if (dirFiles.chart.main) tempData.chart = dirFiles.chart.main.path;
-			if (dirFiles.ini.main) tempData.ini = dirFiles.ini.main.path;
+		tempData.chart = (dirFiles && dirFiles.chart && dirFiles.chart.main) ? dirFiles.chart.main.path : ""
+		tempData.ini = (dirFiles && dirFiles.ini && dirFiles.ini.main) ? dirFiles.ini.main.path : ""
 
-			// @todo enable this when allowing file selects
-			window.api.toMain("fileListeners", tempData)
-		}
+		// @todo enable this when allowing file selects
+		window.api.toMain("fileListeners", tempData);
 	}, [dirFiles]);
 
 	// react return

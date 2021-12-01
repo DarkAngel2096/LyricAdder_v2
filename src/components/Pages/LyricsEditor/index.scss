@@ -1,11 +1,26 @@
 .Lyrics {
+	&--LyricData {
+		text-align: left;
+		margin: 0px;
+	}
 	&--EditorArea {
 		border: 5px solid rgba(100, 100, 100, 1);
 
 		&--Button {
-
 			&--active {
 				background-color: turquoise;
+			}
+		}
+
+		&--LineNumbering {
+			float: left;
+			width: 15%;
+			overflow: scroll;
+			border: 5px solid blue;
+
+			p {
+				margin: 11px 0px;
+				font-family: monospace;
 			}
 		}
 
@@ -14,6 +29,7 @@
 			min-height: 10em;
 			cursor: text;
 			padding: 10px;
+			text-align: left;
 		}
 	}
 }

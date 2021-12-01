@@ -7,6 +7,8 @@ const LyricsEditor = lazy(() => import("../Pages/LyricsEditor/index"));
 const Settings = lazy(() => import("../Pages/Settings/index"));
 const Themes = lazy(() => import("../Pages/Themes/index"));
 
+const SimpleLyricsEditor = lazy(() => import("../Pages/SimpleLyricsEditor/index"));
+
 /* explanation for the routes
 	required is "path" and "component" tags
 
@@ -23,6 +25,12 @@ export const routes = [ {
 		path: "/lyrics/editor",
 		component: LyricsEditor,
 		name: "Lyrics Editor",
+		icon: "edit",
+		files: {chart: ["events"]}
+	}, {
+		path: "/lyrics/simpleEditor",
+		component: SimpleLyricsEditor,
+		name: "Simple Lyrics Editor",
 		icon: "edit",
 		files: {chart: ["events"]}
 	}, {

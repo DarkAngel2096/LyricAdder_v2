@@ -5,7 +5,7 @@ import React from "react";
 import Page from "../../Organisms/Page/index";
 
 // scss import
-import "./index.scss"
+import "./index.scss";
 
 // other module imports
 

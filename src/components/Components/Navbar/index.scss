@@ -14,13 +14,14 @@
 
 			svg {
 				color: var(--sidebar-navbar-svg);
-				flex-basis: 1.5em;
-				font-size: 1.5em;
+				flex-basis: 1.2em;
+				font-size: 1.3em;
+				min-width: 25%;
 			}
 
 			p {
 				margin: 0;
-				text-align: justify;
+				text-align: left;
 			}
 
 			.collapsed {

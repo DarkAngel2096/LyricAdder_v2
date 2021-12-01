@@ -7,6 +7,7 @@ class PhraseEvent extends BaseEvent {
 	endTick			(int)	= tick on when the solo ends
 	multipleEnds	(array) = array of end ticks if there are any
 	lyrics			(array)	= array of LyricEvent classes, containing all lyrics (or default) events for that phrase
+	lyricsExtra		(array) = array of just strings, showing what extra syllables a phrase has
 	*/
 
 	constructor (tick) {
@@ -15,6 +16,7 @@ class PhraseEvent extends BaseEvent {
 		this.endTick = undefined;
 		this.multipleEnds = [];
 		this.lyrics = [];
+		this.lyricsExtra = [];
 	}
 }
 
