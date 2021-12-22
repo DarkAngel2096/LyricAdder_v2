@@ -21,7 +21,11 @@ export default function SimpleLyricsEditor() {
 	const textareaRef = useRef(null);
 
 	// states for numbers
-	const [numberCounterState, setNumberCounterState] = useState(null);
+	const [numberCounterState, setNumberCounterState] = useState({
+		sections: 0,
+		phrases: { chart: 0, text: 0 },
+		events: { chart: 0, text: 0 }
+	});
 	const [lineEventState, setLineEventState] = useState(null);
 
 	// states for the chart lyrics and textarea text and one for remembering which to show
@@ -37,14 +41,8 @@ export default function SimpleLyricsEditor() {
 			let outputPhrases = [];
 			let numCount = {
 				sections: 0,
-				phrases: {
-					chart: 0,
-					text: 0
-				},
-				events: {
-					chart: 0,
-					text:  (numberCounterState && numberCounterState.syllables) ? numberCounterState.syllables : 0
-				}
+				phrases: { chart: 0, text: 0 },
+				events: { chart: 0, text: 0 }
 			}
 
 			// loop through all events
@@ -70,12 +68,18 @@ export default function SimpleLyricsEditor() {
 					console.log(`How'd you get here..?` + chartEvent);
 				}
 			}
+
+			// parse the lyrics from the context, and set that to the state
+			let [text, numbers] = lyrcisObjectsToEditor(fileDataContext.chartData.chart.events.filter(elem => elem.type === "phrase"));
+
+			numCount.events.text = numbers.events;
+			numCount.phrases.text = numbers.phrases;
+
 			// add the data to their respective state values
 			setLineEventState(outputPhrases);
 			setNumberCounterState(numCount);
+			setLyricsChart(text);
 
-			// parse the lyrics from the context, and set that to the state
-			setLyricsChart(lyrcisObjectsToEditor(fileDataContext.chartData.chart.events.filter(elem => elem.type === "phrase")));
 			setShownLyrics("chart");
 		}
 	// eslint-disable-next-line
@@ -85,10 +89,11 @@ export default function SimpleLyricsEditor() {
 	useEffect(() => {
 		// check if ref and shownLyircs are set
 		if (textareaRef !== null && shownLyircs !== null) {
+			console.log(`setting lyrics to: ${shownLyircs}`);
 			textareaRef.current.value = shownLyircs === "chart" ? lyricsChart : lyricsTextarea
 			textareaUpdate({forceUpdate: true, scrollHeight: textareaRef.current.scrollHeight});
 		}
-	// eslin-disable-next-line
+	// eslint-disable-next-line
 	}, [shownLyircs]);
 
 	// variable for debounce below
@@ -123,7 +128,13 @@ export default function SimpleLyricsEditor() {
 			// set the data from here to the textarea state
 			setLyricsTextarea(textData);
 
-			editorToLyricsObject(textData, numberCounterState, lineEventState);
+			let [numbers, lineNumbers] = editorToLyricsObject(textData, fileDataContext);
+
+			let tempNumberCounter = numberCounterState;
+			tempNumberCounter.phrases.text = numbers.phrases;
+			tempNumberCounter.events.text = numbers.events;
+
+			setNumberCounterState(tempNumberCounter);
 
 			setShownLyrics("text");
 		}
@@ -198,6 +209,10 @@ export default function SimpleLyricsEditor() {
 function lyrcisObjectsToEditor (phrases) {
 	// variable to hold the text to return
 	let returnText = "";
+	let numbers = {
+		events: 0,
+		phrases: 0
+	}
 
 	// loop through all the phrases
 	for (let phrase of phrases) {
@@ -220,21 +235,40 @@ function lyrcisObjectsToEditor (phrases) {
 			if (!(lyric.originalLyrics.endsWith("-") || lyric.originalLyrics.endsWith("="))) {
 				phraseText += " ";
 			}
+
+			numbers.events++;
+		}
+
+		// check if lyricsExtra has stuff
+		if (phrase.lyricsExtra.length > 0) {
+			console.log(`found extra lyrics: "${phrase.lyricsExtra.join(", ")}"`);
 		}
 
 		// add the phrase to the return text with a newline
 		returnText += `${phraseText.trim()}\n`;
+
+		numbers.phrases++;
 	}
 
-	return returnText;
+	return [returnText, numbers];
 }
 
 // function to turn the text from the textarea and add the stuff into the data context
-function editorToLyricsObject (text, numberCounterState, lineEventState) {
+function editorToLyricsObject (text, fileDataContext) {
 	// split the got text by newlines, and filtering out empty lines
 	let splitText = text.split("\n").filter(elem => elem.length > 0);
-	numberCounterState.phrases.text = splitText.length;
+	let numbers = {
+		phrases: splitText.length,
+		events: 0
+	}
 
-	// loop through all the line splits,
+	let outputData = []
 
+	// loop through all the line splits
+	for (let line of splitText) {
+
+	}
+
+
+	return [numbers, outputData];
 }

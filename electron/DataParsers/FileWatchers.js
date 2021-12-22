@@ -21,9 +21,12 @@ function chartWatcherFunc({path}) {
 	console.log("Chart watcher called");
 
 	// at the start check if the path is just an empty string, and if there is an active watcher, if so, kill it
-	if (path === "" && chartWatcher) {
-		console.log("Path was empty, watcher found, killing...");
-		chartWatcher.close();
+	if (path === "") {
+		console.log("Path was empty");
+		if (chartWatcher) {
+			console.log("Chart watcher active, killing..");
+			chartWatcher.close();
+		}
 		return;
 	}
 
