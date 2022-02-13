@@ -5,21 +5,21 @@
   "main": "electron/main.js",
   "homepage": "./",
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.34",
-    "@fortawesome/free-solid-svg-icons": "^5.15.2",
-    "@fortawesome/react-fontawesome": "^0.1.14",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.17",
     "draft-js": "^0.11.7",
-    "node-sass": "^6.0.1",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router-dom": "^6.0.1",
-    "react-scripts": "^4.0.2"
+    "node-sass": "7.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^6.2.1",
+    "react-scripts": "^5.0.0"
   },
   "devDependencies": {
-    "css-loader": "^6.5.0",
-    "electron": "^16.0.3",
+    "css-loader": "^6.6.0",
+    "electron": "^17.0.0",
     "electron-builder": "^22.14.5",
-    "sass-loader": "^12.3.0",
+    "sass-loader": "^12.4.0",
     "style-loader": "^3.3.1"
   },
   "build": {

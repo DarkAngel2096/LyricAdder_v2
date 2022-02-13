@@ -4,12 +4,25 @@ const { contextBridge, ipcRenderer } = require("electron");
 const validChannels = [
 	"fileListeners",
 	"setConfigTheme",
-	"chartData"
+	"chartData",
+	"pathData"
 ];
 
 const validSyncChannels = [
 	"syncGetThemes"
 ]
+
+process.once("loaded", () => {
+	window.addEventListener("message", (evt) => {
+		if (evt.data.type === "file-selector") {
+			switch (evt.data.args) {
+				case "dir": ipcRenderer.send("file-selector", {properties: ["openFile", "openDirectory"]}); break;
+				case "file": ipcRenderer.send("file-selector", {properties: ["openFile"], filters: [evt.data.allowedFiles]}); break;
+				default: console.log("what, how?" + evt);
+			}
+		}
+	});
+});
 
 contextBridge.exposeInMainWorld ("api", {
 	// renderer -> main async

@@ -1,5 +1,5 @@
 // module requires
-const {app, ipcMain} =  require("electron");
+const {app, dialog, ipcMain} =  require("electron");
 const fs = require("fs");
 
 const watchers = require("./../DataParsers/FileWatchers");
@@ -40,4 +40,26 @@ ipcMain.on("setConfigTheme", (event, ...args) => {
 	fs.writeFileSync(app.getPath("userData") + "/App Files/config.json", JSON.stringify(config, null, "\t"), "utf8", (err) => {
 		console.log(err);
 	});
+});
+
+// call to open directory selector
+ipcMain.on("file-selector", async (event, args) => {
+	console.log(args);
+	const result = await dialog.showOpenDialog(args);
+	console.log(result);
+
+
+	if (!result.canceled && result.filePaths.length > 0) {
+		// variables for stuff
+		let selectedFolder = result.filePaths[0].split("\\").pop();
+
+
+		fs.readdir(result.filePaths[0], {withFileTypes: true}, (err, files) => {
+			for (let file of files) {
+				console.log(file);
+				console.log(file.isDirectory());
+				console.log(file.isFile());
+			}
+		});
+	}
 });

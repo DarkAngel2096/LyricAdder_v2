@@ -97,13 +97,13 @@ export default function SimpleLyricsEditor() {
 	}, [shownLyircs]);
 
 	// variable for debounce below
-	let fsWaitTextUpdate = false;
+	let [fsWaitTextUpdate, setFsWaitTextUpdate] = useState(false);
 	// function for updating textarea
 	const textareaUpdate = ({event, forceUpdate = false, scrollHeight = false, sizeUpdate = true}) => {
 		// quick debounce set to how often to update
 		if (!forceUpdate) {
 			if (fsWaitTextUpdate) return;
-			fsWaitTextUpdate = setTimeout(() => {fsWaitTextUpdate = false}, 5000);
+			setFsWaitTextUpdate(setTimeout(() => {setFsWaitTextUpdate(false)}, 1000));
 		}
 
 		// stuff for updating the size of the textarea
@@ -129,6 +129,8 @@ export default function SimpleLyricsEditor() {
 			setLyricsTextarea(textData);
 
 			let [numbers, lineNumbers] = editorToLyricsObject(textData, fileDataContext);
+
+			console.log(numbers, lineNumbers);
 
 			let tempNumberCounter = numberCounterState;
 			tempNumberCounter.phrases.text = numbers.phrases;
@@ -193,7 +195,7 @@ export default function SimpleLyricsEditor() {
 							`Sec-ond phrase on the sec-on line\n` +
 							`And syl-lab-les get sep-a-rat-ed with dash-es\n\n` +
 							`Also, an empty line doesn't matter\n` +
-							`AND.... <Things but between "smaller than" and "bigger than" will be singe event>`}
+							`AND.... <Things put between "smaller than" and "bigger than" will be singe event>`}
 						ref={textareaRef}
 						onChange={(e) => textareaUpdate({event: e})}
 						onBlur={(e) => textareaUpdate({event: e, forceUpdate: true})}

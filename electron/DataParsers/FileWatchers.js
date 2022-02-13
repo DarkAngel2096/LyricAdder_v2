@@ -44,7 +44,7 @@ function chartWatcherFunc({path}) {
 
 	// check if there's already a chart watcher set up, then close it
 	if (chartWatcher) {
-		console.log("Closing watcher");
+		console.log("Closing old watcher");
 		chartWatcher.close();
 	}
 
